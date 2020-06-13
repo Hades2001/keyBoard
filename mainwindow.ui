@@ -1,24 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>818</width>
+    <height>688</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(58, 58, 58);</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>370</y>
+      <width>100</width>
+      <height>100</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 170, 255);
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="FuntionTree" name="treeWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>251</width>
+      <height>641</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTreeWidget{  
+    background-color: #5B677A;  
+    font-size:25px;  
+	margin:10px 8px 10px 8px;  
+    color: white;  
+}  
+
+QTreeWidget::item{  
+    margin:10px 8px 10px 8px;  
+    background: #5B677A;  
+	background-clip: margin;
+}
+  
+QTreeWidget::branch{  
+    background:#5B677A;  
+    }  
+
+QTreeWidget::branch:closed:has-children:!has-siblings,
+QTreeWidget::branch:closed:has-children:has-siblings {
+    border-image: none;
+	margin:0px 8px 0px 8px;  
+    image: url(:/icons/icon/branch_close.png)
+}
+ 
+QTreeWidget::branch:open:has-children:!has-siblings,
+QTreeWidget::branch:open:has-children:has-siblings  {
+    border-image: none;
+	margin:0px 8px 0px 8px;  
+	image: url(:/icons/icon/branch_open.png);
+}</string>
+    </property>
+    <property name="autoScroll">
+     <bool>true</bool>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+    </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="dragDropMode">
+     <enum>QAbstractItemView::DragOnly</enum>
+    </property>
+    <property name="defaultDropAction">
+     <enum>Qt::CopyAction</enum>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>false</bool>
+    </property>
+    <property name="headerHidden">
+     <bool>true</bool>
+    </property>
+    <property name="expandsOnDoubleClick">
+     <bool>true</bool>
+    </property>
+    <property name="columnCount">
+     <number>1</number>
+    </property>
+    <attribute name="headerVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="headerCascadingSectionResizes">
+     <bool>false</bool>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>269</x>
+      <y>479</y>
+      <width>541</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>539</width>
+       <height>199</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QStackedWidget" name="sW_btn">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>60</y>
+      <width>521</width>
+      <height>281</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>FuntionTree</class>
+   <extends>QTreeWidget</extends>
+   <header>funtiontree.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

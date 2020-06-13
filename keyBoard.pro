@@ -26,15 +26,31 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    toolsbutton.cpp \
+    treemodel.cpp \
+    funtiontree.cpp \
+    keytimer.cpp \
+    virtualpage.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    toolsbutton.h \
+    treemodel.h \
+    plugininterface.h \
+    virtualkey.h \
+    funtiontree.h \
+    keytimer.h \
+    virtualpage.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    virtualpage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    icon.qrc

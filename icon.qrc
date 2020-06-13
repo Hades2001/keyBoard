@@ -1,2 +1,6 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/icons">
+        <file>icon/branch_close.png</file>
+        <file>icon/branch_open.png</file>
+    </qresource>
+</RCC>
