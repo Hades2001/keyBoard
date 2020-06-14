@@ -1,6 +1,7 @@
 #include "key_mkdir.h"
 
-key_mkdir::key_mkdir()
+key_mkdir::key_mkdir(int type)
 {
-    this->type = kTypeDIR;
+    Q_UNUSED(type)
+    this->type = kTypeDIR;    
 }

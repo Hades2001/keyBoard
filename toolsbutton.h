@@ -9,6 +9,7 @@
 #include <QMimeData>
 #include <QDebug>
 #include <QPainter>
+#include <QTimer>
 #include <virtualkey.h>
 
 #include "pulginmap.h"
@@ -41,13 +42,16 @@ protected:
     void paintEvent(QPaintEvent *e);
 
 private:
+    QTimer     *_doubleClickTimer;
+    bool        _doubleClickFlag = false;
     VirtualKey *_VirtualKeyptr;
     BtnState    _state = k_Btn_IDLE;
     int         _btnnumber;
 
 signals:
     void dragEnter();
-
+    void doubleClick(int);
+    void pressed(int);
     void sendData(int, QByteArray);
     void sendSystemInfo(int, QVariant,QVariant);
 };

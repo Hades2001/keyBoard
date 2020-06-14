@@ -7,7 +7,7 @@
 class key_mkdir : public VirtualKey
 {
 public:
-    key_mkdir();
+    key_mkdir(int type);
 
 public:
     void keypressed(bool) {;}

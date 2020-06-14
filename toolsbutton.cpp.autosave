@@ -5,7 +5,6 @@ ToolsButton::ToolsButton(QWidget *parent):QPushButton(parent)
     setAcceptDrops(true);
 
     _VirtualKeyptr = new VirtualKey;
-
     setVirtualKeyPtr(new VirtualKey);
 
     this->setCheckable(true);
@@ -176,6 +175,7 @@ void ToolsButton::dropEvent(QDropEvent *event)
     VirtualKey *VirtualKeyptr = plugin->getpluginChildPtr(quint16(itemData.at(0)));
     this->setVirtualKeyPtr(VirtualKeyptr);
     */
+    
     if (event->source() == this) {
         event->setDropAction(Qt::MoveAction);
         event->accept();

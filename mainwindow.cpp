@@ -68,14 +68,41 @@ MainWindow::MainWindow(QWidget *parent) :
             //ui->scrollArea->setWidget(plugin->getpluginChildPtr(0)->setWidget);
         }
     }
-    virtualPage *page0 = new virtualPage(this,4,3);
-    ui->sW_btn->addWidget(page0);
-    ui->sW_btn->setCurrentIndex(0);
+
+    _CurrentPageIndex = mkNewpage(4,3);
+    ui->sW_btn->setCurrentIndex(_CurrentPageIndex);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
+{
+    Q_UNUSED(num);
+    int idNum = IDprm.toInt();
+
+    switch( idNum )
+    {
+        case kMsgMkdir:
+            //_systools.getpluginChildPtr(0);
+            //newPage->setBtnClassPtr();
+          break;
+        case kMsgsetPage:
+            ui->sW_btn->setCurrentIndex(dataprm.toInt());
+        break;
+    default: break;
+    }
+}
+
+int MainWindow::mkNewpage(int column, int row)
+{
+    virtualPage* newpage = new virtualPage(this,column,row);
+    connect( newpage,&virtualPage::sendSystemInfo,this,&MainWindow::sysMsgSlots);
+    ui->sW_btn->addWidget(newpage);
+    pageMap.insert(pageMap.size(),newpage);
+    return pageMap.size() - 1;
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
