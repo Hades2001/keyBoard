@@ -33,6 +33,7 @@ public:
     virtual void upDatePic(QPixmap) {;}
     virtual void keypressedGUI(){;}
     virtual void keyDoubleClickGUI(){;}
+    virtual void revertSystemInfo(QVariant,QVariant);
 
 signals:
     void sendData(QByteArray);

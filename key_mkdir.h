@@ -13,7 +13,7 @@ public:
     void keypressed(bool) {;}
     void upDatePic(QPixmap) {;}
 private:
-
+    virtualPage *_newpage;
 };
 
 #endif // KEY_MKDIR_H

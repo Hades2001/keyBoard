@@ -9,7 +9,7 @@ virtualPage::virtualPage(QWidget *parent) :
     creatPage();
 }
 
-virtualPage::virtualPage(QWidget *parent,quint16 column, quint16 row) :
+virtualPage::virtualPage(QWidget *parent, int column, int row) :
     QWidget(parent),
     ui(new Ui::virtualPage)
 {

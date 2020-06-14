@@ -32,10 +32,23 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    enum sysMsgID{
+        kMsgIDLE = 0,
+        kMsgMkdir,
+        kMsgsetPage,
+        kMsgMAX
+    };
+
+    int mkNewpage(int column, int row);
+
 private:
     Ui::MainWindow *ui;
-
     sysTools _systools;
+    QMap <int, virtualPage*> pageMap;
+    int _CurrentPageIndex = -1;
+
+public slots:
+    void sysMsgSlots(int, QVariant,QVariant);
 
 protected:
     void mousePressEvent(QMouseEvent *event);

@@ -19,7 +19,7 @@ class virtualPage : public QWidget
 
 public:
     explicit virtualPage(QWidget *parent = nullptr);
-    explicit virtualPage(QWidget *parent = nullptr,quint16 column = 4, quint16 row = 3);
+    explicit virtualPage(QWidget *parent = nullptr,int column = 4, int row = 3);
     ~virtualPage();
 
 public:
@@ -33,8 +33,8 @@ public:
     int pageIndex;
 
 private:
-    quint16 _column = 4;
-    quint16 _row = 3;
+    int _column = 4;
+    int _row = 3;
     QButtonGroup *_btnGroup;
 
 signals:
