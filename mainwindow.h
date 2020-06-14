@@ -10,12 +10,15 @@
 #include <QDir>
 #include <QPluginLoader>
 #include <QButtonGroup>
-#include "treemodel.h"
 #include "toolsbutton.h"
 #include "plugininterface.h"
 #include "keytimer.h"
 #include "virtualkey.h"
 #include "virtualpage.h"
+
+#include "systools.h"
+
+#include "pulginmap.h"
 
 namespace Ui {
 class MainWindow;
@@ -31,8 +34,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    TreeModel* mModel;
-    QMap <QString, QPluginLoader *> _pulginLoaderMap;
+
+    sysTools _systools;
 
 protected:
     void mousePressEvent(QMouseEvent *event);

@@ -17,26 +17,6 @@
    <string notr="true">background-color: rgb(58, 58, 58);</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>370</y>
-      <width>100</width>
-      <height>100</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(0, 170, 255);
-color: rgb(255, 255, 255);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="FuntionTree" name="treeWidget">
     <property name="geometry">
      <rect>
@@ -149,7 +129,7 @@ QTreeWidget::branch:open:has-children:has-siblings  {
       <x>270</x>
       <y>60</y>
       <width>521</width>
-      <height>281</height>
+      <height>401</height>
      </rect>
     </property>
    </widget>

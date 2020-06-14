@@ -28,20 +28,24 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     toolsbutton.cpp \
-    treemodel.cpp \
     funtiontree.cpp \
     keytimer.cpp \
-    virtualpage.cpp
+    virtualpage.cpp \
+    systools.cpp \
+    pulginmap.cpp \
+    key_mkdir.cpp
 
 HEADERS += \
         mainwindow.h \
     toolsbutton.h \
-    treemodel.h \
     plugininterface.h \
     virtualkey.h \
     funtiontree.h \
     keytimer.h \
-    virtualpage.h
+    virtualpage.h \
+    systools.h \
+    pulginmap.h \
+    key_mkdir.h
 
 FORMS += \
         mainwindow.ui \

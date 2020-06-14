@@ -24,7 +24,7 @@ public:
 
 public:
     void creatPage();
-    void setBtnClassPtr(VirtualKey *);
+    void setBtnClassPtr(int,VirtualKey *);
 
 private:
     Ui::virtualPage *ui;
@@ -36,6 +36,10 @@ private:
     quint16 _column = 4;
     quint16 _row = 3;
     QButtonGroup *_btnGroup;
+
+signals:
+    void sendData(int, QByteArray);
+    void sendSystemInfo(int, QVariant,QVariant);
 };
 
 #endif // VIRTUALPAGE_H

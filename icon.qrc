@@ -2,5 +2,7 @@
     <qresource prefix="/icons">
         <file>icon/branch_close.png</file>
         <file>icon/branch_open.png</file>
+        <file>icon/buckdir.png</file>
+        <file>icon/dir.png</file>
     </qresource>
 </RCC>

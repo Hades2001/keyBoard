@@ -45,11 +45,26 @@ void virtualPage::creatPage()
                     return;
                 }
                 _btnGroup->button(_btnGroup->checkedId())->setChecked(false);
+            });
+
+            connect(btn0,&ToolsButton::sendData,this,[=](int, QByteArray){
+
+            });
+
+            connect(btn0,&ToolsButton::sendSystemInfo,this,[=](int, QVariant,QVariant){
 
             });
         }
     }
+    /*
     ToolsButton *btn0ptr = static_cast<ToolsButton*>(_btnGroup->button(0));
     KeyTimer *timer = new KeyTimer();
     btn0ptr->setVirtualKeyPtr(timer);
+    */
+}
+
+void virtualPage::setBtnClassPtr(int number,VirtualKey *ptr)
+{
+    ToolsButton *btn0ptr = static_cast<ToolsButton*>(_btnGroup->button(number));
+    btn0ptr->setVirtualKeyPtr(ptr);
 }

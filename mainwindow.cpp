@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "treemodel.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -34,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->treeWidget->addTopLevelItems(items);
 
+    uPulginMap.Map.insert(_systools.pluginName(),&_systools);
+
     QDir dir;
     dir.setPath("E:/Hades_Work/LCD_KEY/qt/keyBoard/plugins");
     if( !dir.exists())
@@ -56,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
             QObject *obj = loader->instance();
             PluginInterface *plugin = qobject_cast<PluginInterface *>(obj);
 
-            _pulginLoaderMap.insert(plugin->pluginName(),loader);
+            uPulginMap.Map.insert(plugin->pluginName(),plugin);
 
             quint16 num = plugin->getPluginsNumber();
             qInfo("Number of Plugin %d",num);
@@ -70,7 +71,6 @@ MainWindow::MainWindow(QWidget *parent) :
     virtualPage *page0 = new virtualPage(this,4,3);
     ui->sW_btn->addWidget(page0);
     ui->sW_btn->setCurrentIndex(0);
-
 }
 
 MainWindow::~MainWindow()

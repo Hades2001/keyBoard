@@ -13,7 +13,6 @@ public:
     virtual ~PluginInterface(){}
 
     virtual QString pluginName() = 0;
-    virtual QWidget *widget() = 0;
     virtual quint16 getPluginsNumber() = 0;
     virtual VirtualKey* getpluginChildPtr(quint16 number) = 0;
 

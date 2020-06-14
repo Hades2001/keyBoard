@@ -7,7 +7,12 @@ ToolsButton::ToolsButton(QWidget *parent):QPushButton(parent)
 
     connect(_VirtualKeyptr,&VirtualKey::sendData,this,[=](QByteArray data)
     {
-        Q_UNUSED(data)
+        emit sendData(_btnnumber, data);
+    });
+
+    connect(_VirtualKeyptr,&VirtualKey::sendSystemInfo,this,[=](QVariant msgID,QVariant msgdata)
+    {
+        emit sendSystemInfo(_btnnumber, msgID,msgdata);
     });
 
     connect(_VirtualKeyptr,&VirtualKey::updateGUI,this,[=](QPixmap pic)
@@ -85,11 +90,15 @@ void ToolsButton::setVirtualKeyPtr(VirtualKey *VirtualKeyptr)
     {
         delete _VirtualKeyptr;
         _VirtualKeyptr = VirtualKeyptr;
-        _VirtualKeyptr->keypressed(true);
 
         connect(_VirtualKeyptr,&VirtualKey::sendData,this,[=](QByteArray data)
         {
-            Q_UNUSED(data)
+            emit sendData(_btnnumber, data);
+        });
+
+        connect(_VirtualKeyptr,&VirtualKey::sendSystemInfo,this,[=](QVariant msgID,QVariant msgdata)
+        {
+            emit sendSystemInfo(_btnnumber, msgID,msgdata);
         });
 
         connect(_VirtualKeyptr,&VirtualKey::updateGUI,this,[=](QPixmap pic)
@@ -148,9 +157,15 @@ void ToolsButton::dropEvent(QDropEvent *event)
     Q_UNUSED(event);
     QByteArray itemData = event->mimeData()->data("application/x-qabstractitemmodeldatalist");
     QByteArray itemName = event->mimeData()->data("application/PluginName");
-    qDebug()<<itemData;
-    qDebug()<<itemName;
 
+    qDebug()<<itemData;
+    qDebug()<<QString(itemName);
+
+    /*
+    PluginInterface *plugin = uPulginMap.Map[QString(itemName)];
+    VirtualKey *VirtualKeyptr = plugin->getpluginChildPtr(quint16(itemData.at(0)));
+    this->setVirtualKeyPtr(VirtualKeyptr);
+    */
     if (event->source() == this) {
         event->setDropAction(Qt::MoveAction);
         event->accept();

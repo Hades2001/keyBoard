@@ -28,20 +28,21 @@ public:
 public:
     virtual  ~VirtualKey() {}
 
-public slots:
+public:
     virtual void keypressed(bool) {;}
     virtual void upDatePic(QPixmap) {;}
 
 signals:
     void sendData(QByteArray);
     void updateGUI(QPixmap pic);
+    void sendSystemInfo(QVariant,QVariant);
 
 public:
     QString Name;
     QString Title;
     VirtualKeyType  type = kTypeIDLE;
     QList<VirtaulKeyImage_t> picList;
-    QWidget *setWidget;
+    QWidget *setWidget = nullptr;
 
 private:
     QPluginLoader *PluginPtr;

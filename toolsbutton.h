@@ -11,6 +11,8 @@
 #include <QPainter>
 #include <virtualkey.h>
 
+#include "pulginmap.h"
+
 
 class ToolsButton : public QPushButton
 {
@@ -28,6 +30,7 @@ public:
     };
 public:
     void setVirtualKeyPtr(VirtualKey *VirtualKeyptr);
+    void setbtnNumber(int num ){ _btnnumber = num; }
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
@@ -40,9 +43,13 @@ protected:
 private:
     VirtualKey *_VirtualKeyptr;
     BtnState    _state = k_Btn_IDLE;
+    int         _btnnumber;
 
 signals:
     void dragEnter();
+
+    void sendData(int, QByteArray);
+    void sendSystemInfo(int, QVariant,QVariant);
 };
 
 #endif // TOOLSBUTTON_H
