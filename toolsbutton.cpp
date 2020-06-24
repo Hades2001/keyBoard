@@ -115,6 +115,8 @@ void ToolsButton::setVirtualKeyPtr(VirtualKey *VirtualKeyptr)
             this->setIcon(QIcon(pic));
         });
 
+        _VirtualKeyptr->createdVirtual();
+
         if( _VirtualKeyptr->picList.size() != 0 )
         {
             this->setIcon(QIcon(_VirtualKeyptr->picList.at(0).pic));
@@ -170,11 +172,11 @@ void ToolsButton::dropEvent(QDropEvent *event)
     qDebug()<<itemData;
     qDebug()<<QString(itemName);
 
-    /*
+
     PluginInterface *plugin = uPulginMap.Map[QString(itemName)];
     VirtualKey *VirtualKeyptr = plugin->getpluginChildPtr(quint16(itemData.at(0)));
     this->setVirtualKeyPtr(VirtualKeyptr);
-    */
+
 
     if (event->source() == this) {
         event->setDropAction(Qt::MoveAction);

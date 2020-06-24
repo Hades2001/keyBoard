@@ -9,9 +9,19 @@ class key_mkdir : public VirtualKey
 public:
     key_mkdir(int type);
 
-public:
+protected:
     void keypressed(bool) {;}
     void upDatePic(QPixmap) {;}
+    void keypressedGUI(){;}
+    void keyDoubleClickGUI(){;}
+    void revertSystemInfo(QVariant,QVariant){;}
+    void createdVirtual(){;}
+
+signals:
+    void sendData(QByteArray);
+    void updateGUI(QPixmap pic);
+    void sendSystemInfo(QVariant,QVariant);
+
 private:
     virtualPage *_newpage;
 };

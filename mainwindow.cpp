@@ -6,9 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    QList<QTreeWidgetItem *> items;
-
+/*
     QTreeWidgetItem* item1=new QTreeWidgetItem(ui->treeWidget,QStringList(QString("123")));
     QTreeWidgetItem* item2=new QTreeWidgetItem(ui->treeWidget,QStringList(QString("123")));
     item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
@@ -32,9 +30,11 @@ MainWindow::MainWindow(QWidget *parent) :
     items.append(item2);
 
     ui->treeWidget->addTopLevelItems(items);
-
+    */
     uPulginMap.Map.insert(_systools.pluginName(),&_systools);
+    flushTreeWidget();
 
+    /*
     QDir dir;
     dir.setPath("E:/Hades_Work/LCD_KEY/qt/keyBoard/plugins");
     if( !dir.exists())
@@ -68,9 +68,10 @@ MainWindow::MainWindow(QWidget *parent) :
             //ui->scrollArea->setWidget(plugin->getpluginChildPtr(0)->setWidget);
         }
     }
-
+    */
     _CurrentPageIndex = mkNewpage(4,3);
     ui->sW_btn->setCurrentIndex(_CurrentPageIndex);
+
 }
 
 MainWindow::~MainWindow()
@@ -103,6 +104,36 @@ int MainWindow::mkNewpage(int column, int row)
     ui->sW_btn->addWidget(newpage);
     pageMap.insert(pageMap.size(),newpage);
     return pageMap.size() - 1;
+}
+
+void MainWindow::flushTreeWidget()
+{
+    items.clear();
+
+    QList<QString> pluginKeyList = uPulginMap.Map.keys();
+
+    foreach ( QString  name, pluginKeyList )
+    {
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget,QStringList(name));
+        PluginInterface* Plugptr = uPulginMap.Map[name];
+        int count = Plugptr->getPluginsNumber();
+        for(int i = 0; i < count; i++ )
+        {
+            VirtualKey* keyptr = Plugptr->getpluginChildPtr(quint16(i));
+
+            QTreeWidgetItem* itemchild=new QTreeWidgetItem(item,QStringList(keyptr->Name));
+            itemchild->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled );
+            //itemchild1->setIcon(0,QIcon(":/icons/icon/arrow.png"));
+            itemchild->setData(0,1,QVariant(i));
+        }
+        items.append(item);
+    }
+    /*
+    for(int i = 0; i < uPulginMap.Map.size(); i++ )
+    {
+        QTreeWidgetItem* item1 = new QTreeWidgetItem(ui->treeWidget,QStringList(QString("123")));
+    }
+    */
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

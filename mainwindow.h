@@ -31,6 +31,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void flushTreeWidget();
 
     enum sysMsgID{
         kMsgIDLE = 0,
@@ -43,6 +44,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    QList<QTreeWidgetItem *> items;
+
     sysTools _systools;
     QMap <int, virtualPage*> pageMap;
     int _CurrentPageIndex = -1;

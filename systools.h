@@ -8,6 +8,12 @@
 class sysTools : public PluginInterface
 {
 public:
+    enum keyList{
+        kMkdir = 0,
+        kTimer,
+        kTick,
+        kMax,
+    };
     sysTools(QObject *parent = nullptr);
     QString pluginName(){ return QString("SystemTools");}
     quint16 getPluginsNumber(){ return quint16(syskeyList.size());}
