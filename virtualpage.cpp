@@ -18,6 +18,16 @@ virtualPage::virtualPage(QWidget *parent, int column, int row) :
     _row = row;
     creatPage();
 }
+
+virtualPage::virtualPage(QWidget *parent, int column, int row, QJsonArray json):
+    QWidget(parent),
+    ui(new Ui::virtualPage)
+{
+    ui->setupUi(this);
+    _column = column;
+    _row = row;
+    creatPageFromConfigFile(json);
+}
 virtualPage::~virtualPage()
 {
     delete ui;
@@ -62,6 +72,127 @@ void virtualPage::creatPage()
     btn0ptr->setVirtualKeyPtr(timer);
     */
 }
+
+int virtualPage::creatPageFromConfigFile(QJsonArray jsonConfig)
+{
+    _btnGroup = new QButtonGroup();
+    this->resize(_column*110 - 10,_row*110 - 10);
+
+    QJsonObject jsonBtnOBJ;
+    for( int x = 0; x < _column; x++ )
+    {
+        for( int y = 0; y < _row; y++ )
+        {
+            int BtnID = y*_column + x;
+
+            if( !jsonConfig.contains(BtnID))
+            {
+                return -1;
+            }
+            jsonBtnOBJ = jsonConfig[BtnID].toObject();
+
+            if( jsonBtnOBJ["btnID"].toInt() != BtnID )
+            {
+                qWarning("btn ID Error");
+                return -1;
+            }
+
+            if( !jsonBtnOBJ.contains("itemName"))
+            {
+                return -1;
+            }
+            QString itemName = jsonBtnOBJ["itemName"].toString();
+            int ChildID = jsonBtnOBJ["childID"].toInt();
+
+            qDebug()<<QString::number(BtnID)<<itemName<<QString::number(ChildID);
+
+            ToolsButton *btn0 = new ToolsButton(this);
+            _btnGroup->addButton(btn0,y*_column + x);
+            btn0->setGeometry(x * 110 ,y * 110,100,100);
+            btn0->show();
+
+            btn0->setbtnNumber(BtnID);
+
+            connect(btn0,&ToolsButton::dragEnter,this,[=](){
+                _btnGroup->setExclusive(false);
+                if( _btnGroup->checkedId() < 0 )
+                {
+                    _btnGroup->setExclusive(true);
+                    return;
+                }
+                _btnGroup->button(_btnGroup->checkedId())->setChecked(false);
+            });
+
+            connect(btn0,&ToolsButton::sendData,this,[=](int, QByteArray){
+
+            });
+
+            connect(btn0,&ToolsButton::sendSystemInfo,this,&virtualPage::sendInfo);
+
+
+            PluginInterface *plugin = uPulginMap.Map[QString(itemName)];
+            VirtualKey *VirtualKeyptr = plugin->getpluginChildPtr(quint16(ChildID));
+            VirtualKeyptr->type = jsonBtnOBJ["type"].toInt();
+            VirtualKeyptr->parentsName = itemName;
+            VirtualKeyptr->childID = ChildID;
+
+            btn0->setVirtualKeyPtr(VirtualKeyptr);
+        }
+    }
+    return 0;
+}
+
+int virtualPage::setBtnFromConfigFile(QJsonArray jsonConfig)
+{
+    QJsonObject jsonBtnOBJ;
+
+    for( int x = 0; x < _column; x++ )
+    {
+        for( int y = 0; y < _row; y++ )
+        {
+            int BtnID = y*_column + x;
+            /*
+            if( !jsonConfig.contains(BtnID))
+            {
+                qWarning("Fine btn ID Error");
+                return -1;
+            }
+            */
+            jsonBtnOBJ = jsonConfig[BtnID].toObject();
+
+            if( jsonBtnOBJ["btnID"].toInt() != BtnID )
+            {
+                qWarning("btn ID Error");
+                return -1;
+            }
+
+            if( !jsonBtnOBJ.contains("itemName"))
+            {
+                return -1;
+            }
+            QString itemName = jsonBtnOBJ["itemName"].toString();
+            int ChildID = jsonBtnOBJ["childID"].toInt();
+            int type = jsonBtnOBJ["type"].toInt();
+            qDebug()<<QString::number(BtnID)<<itemName<<QString::number(ChildID);
+
+            if( type != 0 )
+            {
+                PluginInterface *plugin = uPulginMap.Map[QString(itemName)];
+                VirtualKey *VirtualKeyptr = plugin->getpluginChildPtr(quint16(ChildID));
+                VirtualKeyptr->type = type;
+                VirtualKeyptr->parentsName = itemName;
+                VirtualKeyptr->childID = ChildID;
+
+                setBtnClassPtr(BtnID,VirtualKeyptr);
+
+                QJsonObject jsonkeyconfigOBJ = jsonBtnOBJ["config"].toObject();
+                VirtualKeyptr->SetConfig(jsonkeyconfigOBJ);
+            }
+        }
+    }
+    return 0;
+}
+
 void virtualPage::sendInfo(int id, QVariant pid,QVariant pdata)
 {
     emit sendSystemInfo(id,pid,pdata);

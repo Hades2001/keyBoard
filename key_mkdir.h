@@ -1,6 +1,7 @@
 #ifndef KEY_MKDIR_H
 #define KEY_MKDIR_H
 
+#include <QJsonObject>
 #include "virtualkey.h"
 #include "virtualpage.h"
 
@@ -16,6 +17,9 @@ protected:
     void keyDoubleClickGUI();
     void revertSystemInfo(QVariant,QVariant);
     void createdVirtual();
+
+    QVariant getConfig();
+    void SetConfig(QVariant);
 
 private:
     int _pageIndex = -1;

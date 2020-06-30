@@ -39,7 +39,7 @@ public:
     int mkDirpage(int num, int column, int row);
 
     void saveConfig();
-    void readFromConfig();
+    int readFromConfig();
 
 private:
     Ui::MainWindow *ui;

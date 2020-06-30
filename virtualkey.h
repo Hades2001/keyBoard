@@ -31,6 +31,7 @@ public:
         kMsgMkdir,
         kMsgsetPage,
         kMsgsetPageIndex,
+        kMsgRemovePage,
         kMsgConfig,
         kMsgMAX
     };
@@ -56,7 +57,7 @@ signals:
 public:
     QString Name;
     QString Title;
-    VirtualKeyType  type = kTypeIDLE;
+    int  type = kTypeIDLE;
 
     QString parentsName;
     int     childID = -1;

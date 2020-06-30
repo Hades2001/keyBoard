@@ -25,6 +25,7 @@ class virtualPage : public QWidget
 public:
     explicit virtualPage(QWidget *parent = nullptr);
     explicit virtualPage(QWidget *parent = nullptr,int column = 4, int row = 3);
+    explicit virtualPage(QWidget *parent,int column, int row, QJsonArray json);
     ~virtualPage();
 
 public:
@@ -33,6 +34,8 @@ public:
     void revertSystemInfo(int, QVariant,QVariant);
     void sendSystemInfoToAll(QVariant,QVariant);
     QJsonObject generateConfig();
+    int creatPageFromConfigFile(QJsonArray);
+    int setBtnFromConfigFile(QJsonArray);
 
 public slots:
     void sendInfo(int id, QVariant pid,QVariant pdata);

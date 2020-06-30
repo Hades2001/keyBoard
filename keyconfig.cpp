@@ -57,6 +57,7 @@ int keyconfig::readConfigListFromFile()
     QDir configDir(pathstr);
     if( !configDir.exists("config"))
     {
+        configDir.mkdir("config");
         _configMap.append("default");
         creatConfigFile("default");
         writeConfigListToFile("default");
@@ -127,6 +128,7 @@ int keyconfig::creatConfigFile(QString name)
     }
 
     QString filename = configDir.path() +"/"+ name + ".json";
+    qDebug()<<filename;
     QFile readFile(filename);
     readFile.open(QIODevice::ReadWrite);
 

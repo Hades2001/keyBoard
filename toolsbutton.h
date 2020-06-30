@@ -12,6 +12,13 @@
 #include <QTimer>
 #include <virtualkey.h>
 
+#include <QListWidget>
+#include <QMenu>
+#include <QAction>
+#include <QContextMenuEvent>
+#include <QMouseEvent>
+
+
 #include "pulginmap.h"
 
 
@@ -43,12 +50,22 @@ protected:
     void leaveEvent(QEvent *e);
     void paintEvent(QPaintEvent *e);
 
+    void contextMenuEvent( QContextMenuEvent * event );
+
 private:
     QTimer     *_doubleClickTimer;
     bool        _doubleClickFlag = false;
     VirtualKey *_VirtualKeyptr;
     BtnState    _state = k_Btn_IDLE;
     int         _btnnumber;
+
+    QMenu *_contextMenu;
+    QAction *_addAction;
+    QAction *_delAction;
+
+    QString QMenuStyleSheet="QMenu{background-color: rgb(30, 30, 30);color: rgb(255, 255, 255);}\
+                             QMenu::item {height:30px; width:70px; padding-left:5px; background-color: rgb(30, 30, 30); color: rgb(255, 255, 255);}\
+                             QMenu::item:selected{background-color: rgb(255, 200, 0);color: rgb(30, 30, 30)}";
 
 signals:
     void dragEnter();

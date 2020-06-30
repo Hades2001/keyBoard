@@ -39,6 +39,17 @@ ToolsButton::ToolsButton(QWidget *parent):QPushButton(parent)
         _doubleClickFlag = false;
         _doubleClickTimer->stop();
     });
+
+    this->setContextMenuPolicy(Qt::DefaultContextMenu);
+
+    _contextMenu = new QMenu;
+    _contextMenu->setStyleSheet(QMenuStyleSheet);
+    _addAction = new QAction("add",this);
+    _delAction = new QAction("del",this);
+    _contextMenu->addAction(_addAction);
+    _contextMenu->addAction(_delAction);
+
+
 }
 void ToolsButton::paintEvent(QPaintEvent *e)
 {
@@ -61,19 +72,19 @@ void ToolsButton::paintEvent(QPaintEvent *e)
     }
 
     painter.setPen(QPen(color,
-                        5,
+                        4,
                         Qt::SolidLine,
                         Qt::RoundCap,
                         Qt::RoundJoin));
 
     painter.setBrush(QBrush(QColor(0x2d,0x2d,0x2d)));
     //painter.drawRoundRect(QRect(5,5,this->width()-10,this->height()-10));
-    painter.drawRoundedRect(QRect(5,5,this->width()-10,this->height()-10),25,25);
+    painter.drawRoundedRect(QRect(5,5,this->width()-10,this->height()-10),20,20);
 
     //painter.drawRoundedRect(QRect(5,5,this->width()-10,this->height()-10));
     if( _VirtualKeyptr->picList.size() != 0 )
     {
-        painter.drawPixmap(QRect(5,5,this->width()-10,this->height()-10),_VirtualKeyptr->picList.at(0).pic);
+        painter.drawPixmap(QRect(12,12,this->width()-24,this->height()-24),_VirtualKeyptr->picList.at(0).pic);
     }
 
     painter.end();
@@ -98,6 +109,11 @@ void ToolsButton::setVirtualKeyPtr(VirtualKey *VirtualKeyptr)
 {
     if( VirtualKeyptr != nullptr )
     {
+        if( _VirtualKeyptr->type == VirtualKey::kTypeDIR )
+        {
+            _VirtualKeyptr->revertSystemInfo(VirtualKey::kMsgRemovePage,0);
+        }
+
         delete _VirtualKeyptr;
         _VirtualKeyptr = VirtualKeyptr;
 
@@ -106,15 +122,18 @@ void ToolsButton::setVirtualKeyPtr(VirtualKey *VirtualKeyptr)
             emit sendData(_btnnumber, data);
         });
 
+
         connect(_VirtualKeyptr,&VirtualKey::sendSystemInfo,this,[=](QVariant msgID,QVariant msgdata)
         {
             emit sendSystemInfo(_btnnumber, msgID,msgdata);
         });
 
+
         connect(_VirtualKeyptr,&VirtualKey::updateGUI,this,[=](QPixmap pic)
         {
             this->setIcon(QIcon(pic));
         });
+
 
         _VirtualKeyptr->createdVirtual();
 
@@ -122,6 +141,7 @@ void ToolsButton::setVirtualKeyPtr(VirtualKey *VirtualKeyptr)
         {
             this->setIcon(QIcon(_VirtualKeyptr->picList.at(0).pic));
         }
+
     }
 }
 
@@ -189,6 +209,7 @@ void ToolsButton::dropEvent(QDropEvent *event)
 
     this->setVirtualKeyPtr(VirtualKeyptr);
 
+
     if (event->source() == this) {
         event->setDropAction(Qt::MoveAction);
         event->accept();
@@ -196,6 +217,28 @@ void ToolsButton::dropEvent(QDropEvent *event)
         event->acceptProposedAction();
     }
 }
+
+void ToolsButton::contextMenuEvent( QContextMenuEvent * event )
+{
+    Q_UNUSED(event)
+    if(( _VirtualKeyptr->type == VirtualKey::kTypeIDLE )||\
+       ( _VirtualKeyptr->type == VirtualKey::kTypeBack))
+    {
+        return;
+    }
+    _contextMenu->exec(QCursor::pos());
+}
+/*
+void ToolsButton::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton)
+    {
+        _contextMenu->exec(event->globalPos());
+    }
+    //要继续保留QListWidget原有的点击事件.
+    ToolsButton::mousePressEvent(event);
+}
+*/
 /*
 void DragWidget::dropEvent(QDropEvent *event)
 {

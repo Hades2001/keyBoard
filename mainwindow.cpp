@@ -45,11 +45,20 @@ MainWindow::MainWindow(QWidget *parent) :
             //ui->scrollArea->setWidget(plugin->getpluginChildPtr(0)->setWidget);
         }
     }
-    */
+
     _CurrentPageIndex = mkNewpage(4,3);
-
     ui->sW_btn->setCurrentIndex(_CurrentPageIndex);
-
+    */
+    if( readFromConfig()!= 0)
+    {
+        _CurrentPageIndex = mkNewpage(4,3);
+        ui->sW_btn->setCurrentIndex(_CurrentPageIndex);
+        saveConfig();
+    }
+    else
+    {
+        ui->sW_btn->setCurrentWidget(pageMap[_CurrentPageIndex]);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -61,8 +70,6 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
 {
     Q_UNUSED(num);
     int idNum = IDprm.toInt();
-    //qDebug()<<num<<IDprm<<dataprm;
-
     switch( idNum )
     {
         case VirtualKey::kMsgMkdir:
@@ -72,6 +79,13 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
             qDebug()<<"kMsgsetPage"<<dataprm;
             ui->sW_btn->setCurrentWidget(pageMap[dataprm.toInt()]);
             _CurrentPageIndex = dataprm.toInt();
+        break;
+        case VirtualKey::kMsgRemovePage:
+            qDebug()<<"remove page"<<dataprm;
+            if( pageMap.contains(dataprm.toInt()))
+            {
+                pageMap.remove(dataprm.toInt());
+            }
         break;
     default: break;
     }
@@ -113,13 +127,14 @@ int MainWindow::mkDirpage(int num,int column, int row)
     keyback->childID = 0;
     keyback->type = VirtualKey::kTypeBack;
     newpage->setBtnClassPtr(0,keyback);
-    newpage->revertSystemInfo(0,0,_CurrentPageIndex);
+    newpage->revertSystemInfo(0,VirtualKey::kMsgsetPageIndex,_CurrentPageIndex);
+
     connect( newpage,&virtualPage::sendSystemInfo,this,&MainWindow::sysMsgSlots);
 
     pageMap.insert(pageIndex,newpage);
     ui->sW_btn->addWidget(newpage);
     //pageMap.insert(pageMap.size(),newpage);
-    pageMap[_CurrentPageIndex]->revertSystemInfo(num,0,pageIndex);
+    pageMap[_CurrentPageIndex]->revertSystemInfo(num,VirtualKey::kMsgsetPageIndex,pageIndex);
 
     return pageIndex;
 }
@@ -161,29 +176,72 @@ void  MainWindow::saveConfig()
     QJsonObject pagejsonOBJ;
 
     qDebug()<<"Page Size:"<<QString::number(pageMap.size());
+
+    foreach( virtualPage *ptr, pageMap)
+    {
+        ptr->revertSystemInfo(-1,VirtualKey::kMsgConfig,QVariant(0));
+        QJsonObject jsonOBJ = ptr->generateConfig();
+        jsonArray.append(jsonOBJ);
+        //jsonArray.insert(i,jsonOBJ);
+    }
+    /*
     for( int i = 0; i < pageMap.size(); i++ )
     {
         virtualPage *ptr = pageMap[i];
         ptr->revertSystemInfo(-1,VirtualKey::kMsgConfig,QVariant(0));
         QJsonObject jsonOBJ = ptr->generateConfig();
         jsonArray.insert(i,jsonOBJ);
-
     }
+    */
+
     pagejsonOBJ.insert("pageArray",jsonArray);
+    pagejsonOBJ.insert("_CurrentPageIndex",_CurrentPageIndex);
 
     sysconfig->writeJsonDataToConfigFile("page",pagejsonOBJ);
     sysconfig->saveConfig("default");
 
 }
-void  MainWindow::readFromConfig()
+int MainWindow::readFromConfig()
 {
     QJsonObject pageJsonObj = sysconfig->getConfigJsonOBJ();
     if( !pageJsonObj.contains("page"))
     {
         QMessageBox::warning(this,"Config Error","JSON file is damaged");
-        return;
+        return -1;
     }
+    QJsonObject jsonPageOBJ = pageJsonObj["page"].toObject();
+
+    if( !jsonPageOBJ.contains("_CurrentPageIndex"))
+    {
+        return -1;
+    }
+    _CurrentPageIndex = jsonPageOBJ["_CurrentPageIndex"].toInt();
+
+    QJsonArray pageArray = jsonPageOBJ["pageArray"].toArray();
+    if( pageArray.size() == 0 )
+    {
+        QMessageBox::warning(this,"Config Error","Page is Empty");
+        return -1;
+    }
+
+    for( int i = 0; i < pageArray.size(); i++)
+    {
+        QJsonObject jsonOBJ = pageArray[i].toObject();
+
+        int pageIndex = jsonOBJ["pageIndex"].toInt();
+        QJsonArray jsonArray = jsonOBJ["keyArray"].toArray();
+
+        virtualPage* newpage = new virtualPage(this,4,3);
+        newpage->setBtnFromConfigFile(jsonArray);
+        newpage->pageIndex = pageIndex;
+        connect( newpage,&virtualPage::sendSystemInfo,this,&MainWindow::sysMsgSlots);
+        pageMap.insert(pageIndex,newpage);
+        ui->sW_btn->addWidget(newpage);
+    }
+
+
     //pageJsonObj["page"]
+    return 0;
 }
 
 
