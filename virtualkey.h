@@ -20,9 +20,19 @@ public:
     enum VirtualKeyType{
         kTypeIDLE = 0,
         kTypeDIR,
+        kTypeBack,
         kTypeCMD,
         kTypeEndpoint,
         kTypeMAX
+    };
+
+    enum sysMsgID{
+        kMsgIDLE = 0,
+        kMsgMkdir,
+        kMsgsetPage,
+        kMsgsetPageIndex,
+        kMsgConfig,
+        kMsgMAX
     };
 
 public:
@@ -35,6 +45,9 @@ public:
     virtual void keyDoubleClickGUI(){;}
     virtual void revertSystemInfo(QVariant,QVariant){;}
     virtual void createdVirtual(){;}
+
+    virtual QVariant getConfig(){return QJsonObject();}
+    virtual void SetConfig(QVariant){;}
 signals:
     void sendData(QByteArray);
     void updateGUI(QPixmap pic);
@@ -44,6 +57,11 @@ public:
     QString Name;
     QString Title;
     VirtualKeyType  type = kTypeIDLE;
+
+    QString parentsName;
+    int     childID = -1;
+    int     imageID = -1;
+
     QList<VirtaulKeyImage_t> picList;
     QWidget *setWidget = nullptr;
 

@@ -10,15 +10,17 @@
 #include <QDir>
 #include <QPluginLoader>
 #include <QButtonGroup>
+#include <QMessageBox>
 #include "toolsbutton.h"
+#include "keyconfig.h"
 #include "plugininterface.h"
 #include "keytimer.h"
 #include "virtualkey.h"
 #include "virtualpage.h"
 
 #include "systools.h"
-
 #include "pulginmap.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -32,15 +34,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void flushTreeWidget();
-
-    enum sysMsgID{
-        kMsgIDLE = 0,
-        kMsgMkdir,
-        kMsgsetPage,
-        kMsgMAX
-    };
-
+    int getEmptypageIndex();
     int mkNewpage(int column, int row);
+    int mkDirpage(int num, int column, int row);
+
+    void saveConfig();
+    void readFromConfig();
 
 private:
     Ui::MainWindow *ui;
@@ -56,6 +55,8 @@ public slots:
 
 protected:
     void mousePressEvent(QMouseEvent *event);
+private slots:
+    void on_Bn_Save_pressed();
 };
 
 #endif // MAINWINDOW_H

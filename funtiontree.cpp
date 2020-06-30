@@ -9,14 +9,16 @@ FuntionTree::FuntionTree(QWidget *parent):QTreeWidget(parent)
 QMimeData *FuntionTree::mimeData(const QList<QTreeWidgetItem *> items) const
 {
     Q_UNUSED(items);
-    qDebug() <<"[-----]"<< this->currentItem()->text(0)<<this->currentItem()->data(0,1);
     QByteArray itemData;
     itemData.resize(2);
     itemData[0] = char(this->currentItem()->data(0,1).toInt());
+    QString pluginname = this->currentItem()->data(1,1).toString();
+
+    qDebug() <<"[-----]"<< this->currentItem()->text(0)<<pluginname<<this->currentItem()->data(0,1);
 
     QMimeData *mimeData = new QMimeData;
     mimeData->setData("application/x-qabstractitemmodeldatalist", itemData);
-    mimeData->setData("application/PluginName", QString("Name is this").toLatin1());
+    mimeData->setData("application/PluginName", pluginname.toLatin1());
     return mimeData;
 }
 

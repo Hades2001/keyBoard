@@ -5,32 +5,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
-/*
-    QTreeWidgetItem* item1=new QTreeWidgetItem(ui->treeWidget,QStringList(QString("123")));
-    QTreeWidgetItem* item2=new QTreeWidgetItem(ui->treeWidget,QStringList(QString("123")));
-    item1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-    item2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-
-    QTreeWidgetItem* itemchild1=new QTreeWidgetItem(item2,QStringList(QString("123-1")));
-    itemchild1->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled );
-    //itemchild1->setIcon(0,QIcon(":/icons/icon/left arrow, file left, left, document, send, arrow.png"));
-    itemchild1->setData(0,1,QVariant(10));
-
-    QTreeWidgetItem* itemchild2=new QTreeWidgetItem(item2,QStringList(QString("123-2")));
-    itemchild2->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled );
-    itemchild2->setData(0,1,QVariant(20));
-
-    QFont font = this->font();
-    font.setPixelSize(10);
-    itemchild1->setFont(0,font);
-    itemchild2->setFont(0,font);
-
-    items.append(item1);
-    items.append(item2);
-
-    ui->treeWidget->addTopLevelItems(items);
-    */
+    sysconfig = new keyconfig(this);
     uPulginMap.Map.insert(_systools.pluginName(),&_systools);
     flushTreeWidget();
 
@@ -70,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     */
     _CurrentPageIndex = mkNewpage(4,3);
+
     ui->sW_btn->setCurrentIndex(_CurrentPageIndex);
 
 }
@@ -83,27 +61,67 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
 {
     Q_UNUSED(num);
     int idNum = IDprm.toInt();
+    //qDebug()<<num<<IDprm<<dataprm;
 
     switch( idNum )
     {
-        case kMsgMkdir:
-            //_systools.getpluginChildPtr(0);
-            //newPage->setBtnClassPtr();
+        case VirtualKey::kMsgMkdir:
+            mkDirpage(num,4,3);
           break;
-        case kMsgsetPage:
-            ui->sW_btn->setCurrentIndex(dataprm.toInt());
+        case VirtualKey::kMsgsetPage:
+            qDebug()<<"kMsgsetPage"<<dataprm;
+            ui->sW_btn->setCurrentWidget(pageMap[dataprm.toInt()]);
+            _CurrentPageIndex = dataprm.toInt();
         break;
     default: break;
     }
 }
 
+int MainWindow::getEmptypageIndex()
+{
+    for ( int i = 0; i < 30000; i++) {
+        if( pageMap.contains(i) == false )
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
 int MainWindow::mkNewpage(int column, int row)
 {
+    int pageIndex = getEmptypageIndex();
+    if( pageIndex == -1 ) return -1;
+
     virtualPage* newpage = new virtualPage(this,column,row);
+    newpage->pageIndex = pageIndex;
     connect( newpage,&virtualPage::sendSystemInfo,this,&MainWindow::sysMsgSlots);
     ui->sW_btn->addWidget(newpage);
-    pageMap.insert(pageMap.size(),newpage);
-    return pageMap.size() - 1;
+    pageMap.insert(pageIndex,newpage);
+    return pageIndex;
+}
+
+int MainWindow::mkDirpage(int num,int column, int row)
+{
+    int pageIndex = getEmptypageIndex();
+    if( pageIndex == -1 ) return -1;
+
+    virtualPage* newpage = new virtualPage(this,column,row);
+    newpage->pageIndex = pageIndex;
+    VirtualKey* keyback = _systools.getpluginChildPtr(0);
+    keyback->parentsName = _systools.pluginName();
+    keyback->childID = 0;
+    keyback->type = VirtualKey::kTypeBack;
+    newpage->setBtnClassPtr(0,keyback);
+    newpage->revertSystemInfo(0,0,_CurrentPageIndex);
+    connect( newpage,&virtualPage::sendSystemInfo,this,&MainWindow::sysMsgSlots);
+
+    pageMap.insert(pageIndex,newpage);
+    ui->sW_btn->addWidget(newpage);
+    //pageMap.insert(pageMap.size(),newpage);
+    pageMap[_CurrentPageIndex]->revertSystemInfo(num,0,pageIndex);
+
+    return pageIndex;
 }
 
 void MainWindow::flushTreeWidget()
@@ -115,26 +133,59 @@ void MainWindow::flushTreeWidget()
     foreach ( QString  name, pluginKeyList )
     {
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget,QStringList(name));
+        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         PluginInterface* Plugptr = uPulginMap.Map[name];
         int count = Plugptr->getPluginsNumber();
         for(int i = 0; i < count; i++ )
         {
-            VirtualKey* keyptr = Plugptr->getpluginChildPtr(quint16(i));
-
-            QTreeWidgetItem* itemchild=new QTreeWidgetItem(item,QStringList(keyptr->Name));
+            QString namechild = Plugptr->getpluginChildName(quint16(i));
+            QTreeWidgetItem* itemchild=new QTreeWidgetItem(item,QStringList(namechild));
             itemchild->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled );
+
+            QFont font = this->font();
+            font.setPixelSize(16);
+            itemchild->setFont(0,font);
+
             //itemchild1->setIcon(0,QIcon(":/icons/icon/arrow.png"));
+            itemchild->setData(1,1,QVariant(name));
             itemchild->setData(0,1,QVariant(i));
+
         }
         items.append(item);
     }
-    /*
-    for(int i = 0; i < uPulginMap.Map.size(); i++ )
-    {
-        QTreeWidgetItem* item1 = new QTreeWidgetItem(ui->treeWidget,QStringList(QString("123")));
-    }
-    */
 }
+
+void  MainWindow::saveConfig()
+{
+    QJsonArray  jsonArray;
+    QJsonObject pagejsonOBJ;
+
+    qDebug()<<"Page Size:"<<QString::number(pageMap.size());
+    for( int i = 0; i < pageMap.size(); i++ )
+    {
+        virtualPage *ptr = pageMap[i];
+        ptr->revertSystemInfo(-1,VirtualKey::kMsgConfig,QVariant(0));
+        QJsonObject jsonOBJ = ptr->generateConfig();
+        jsonArray.insert(i,jsonOBJ);
+
+    }
+    pagejsonOBJ.insert("pageArray",jsonArray);
+
+    sysconfig->writeJsonDataToConfigFile("page",pagejsonOBJ);
+    sysconfig->saveConfig("default");
+
+}
+void  MainWindow::readFromConfig()
+{
+    QJsonObject pageJsonObj = sysconfig->getConfigJsonOBJ();
+    if( !pageJsonObj.contains("page"))
+    {
+        QMessageBox::warning(this,"Config Error","JSON file is damaged");
+        return;
+    }
+    //pageJsonObj["page"]
+}
+
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
@@ -177,3 +228,9 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
     */
 }
+
+void MainWindow::on_Bn_Save_pressed()
+{
+    saveConfig();
+}
+

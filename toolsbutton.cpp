@@ -8,7 +8,7 @@ ToolsButton::ToolsButton(QWidget *parent):QPushButton(parent)
     setVirtualKeyPtr(new VirtualKey);
 
     this->setCheckable(true);
-    connect(this,&ToolsButton::clicked,this,[=](bool clicked)
+    connect(this,&QPushButton::clicked,this,[=](bool clicked)
     {
         Q_UNUSED(clicked);
         this->repaint();
@@ -16,7 +16,7 @@ ToolsButton::ToolsButton(QWidget *parent):QPushButton(parent)
 
     _doubleClickTimer = new QTimer;
 
-    connect(this,&ToolsButton::pressed,this,[=]()
+    connect(this,&QPushButton::pressed,this,[=]()
     {
         if( _doubleClickFlag == true )
         {
@@ -69,10 +69,11 @@ void ToolsButton::paintEvent(QPaintEvent *e)
     painter.setBrush(QBrush(QColor(0x2d,0x2d,0x2d)));
     //painter.drawRoundRect(QRect(5,5,this->width()-10,this->height()-10));
     painter.drawRoundedRect(QRect(5,5,this->width()-10,this->height()-10),25,25);
+
     //painter.drawRoundedRect(QRect(5,5,this->width()-10,this->height()-10));
     if( _VirtualKeyptr->picList.size() != 0 )
     {
-        painter.drawPixmap(QRect(30,30,this->width()-60,this->height()-60),_VirtualKeyptr->picList.at(0).pic);
+        painter.drawPixmap(QRect(5,5,this->width()-10,this->height()-10),_VirtualKeyptr->picList.at(0).pic);
     }
 
     painter.end();
@@ -127,7 +128,11 @@ void ToolsButton::setVirtualKeyPtr(VirtualKey *VirtualKeyptr)
 void ToolsButton::dragEnterEvent(QDragEnterEvent *event)
 {
     Q_UNUSED(event);
-    if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
+    if( _VirtualKeyptr->type == VirtualKey::kTypeBack)
+    {
+        event->ignore();
+    }
+    else if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
         this->setText("Enter");
         _state = k_Btn_DragEnter;
         emit dragEnter();
@@ -152,7 +157,11 @@ void ToolsButton::dragLeaveEvent(QDragLeaveEvent *event)
 void ToolsButton::dragMoveEvent(QDragMoveEvent *event)
 {
     Q_UNUSED(event);
-    if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
+    if( _VirtualKeyptr->type == VirtualKey::kTypeBack)
+    {
+        event->ignore();
+    }
+    else if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
         if (event->source() == this) {
             event->setDropAction(Qt::MoveAction);
             event->accept();
@@ -172,11 +181,13 @@ void ToolsButton::dropEvent(QDropEvent *event)
     qDebug()<<itemData;
     qDebug()<<QString(itemName);
 
-
     PluginInterface *plugin = uPulginMap.Map[QString(itemName)];
     VirtualKey *VirtualKeyptr = plugin->getpluginChildPtr(quint16(itemData.at(0)));
-    this->setVirtualKeyPtr(VirtualKeyptr);
 
+    VirtualKeyptr->parentsName = itemName;
+    VirtualKeyptr->childID = itemData.at(0);
+
+    this->setVirtualKeyPtr(VirtualKeyptr);
 
     if (event->source() == this) {
         event->setDropAction(Qt::MoveAction);

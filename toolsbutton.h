@@ -31,7 +31,9 @@ public:
     };
 public:
     void setVirtualKeyPtr(VirtualKey *VirtualKeyptr);
+    VirtualKey* getVirtualKeyPtr(){return _VirtualKeyptr;}
     void setbtnNumber(int num ){ _btnnumber = num; }
+    void revertSystemInfo(QVariant pid ,QVariant pdata) { _VirtualKeyptr->revertSystemInfo(pid,pdata);}
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);

@@ -15,6 +15,7 @@ public:
     virtual QString pluginName() = 0;
     virtual quint16 getPluginsNumber() = 0;
     virtual VirtualKey* getpluginChildPtr(quint16 number) = 0;
+    virtual QString getpluginChildName(quint16 number) = 0;
 
 signals:
     void sendData(QByteArray);

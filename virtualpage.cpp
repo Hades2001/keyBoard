@@ -6,7 +6,7 @@ virtualPage::virtualPage(QWidget *parent) :
     ui(new Ui::virtualPage)
 {
     ui->setupUi(this);
-    creatPage();
+    creatPage();    
 }
 
 virtualPage::virtualPage(QWidget *parent, int column, int row) :
@@ -33,9 +33,11 @@ void virtualPage::creatPage()
         for( int y = 0; y < _row; y++ )
         {
             ToolsButton *btn0 = new ToolsButton(this);
-            _btnGroup->addButton(btn0,x * _row + y);
+            _btnGroup->addButton(btn0,y*_column + x);
             btn0->setGeometry(x * 110 ,y * 110,100,100);
             btn0->show();
+
+            btn0->setbtnNumber(y*_column + x);
 
             connect(btn0,&ToolsButton::dragEnter,this,[=](){
                 _btnGroup->setExclusive(false);
@@ -51,9 +53,7 @@ void virtualPage::creatPage()
 
             });
 
-            connect(btn0,&ToolsButton::sendSystemInfo,this,[=](int, QVariant,QVariant){
-
-            });
+            connect(btn0,&ToolsButton::sendSystemInfo,this,&virtualPage::sendInfo);
         }
     }
     /*
@@ -62,9 +62,62 @@ void virtualPage::creatPage()
     btn0ptr->setVirtualKeyPtr(timer);
     */
 }
+void virtualPage::sendInfo(int id, QVariant pid,QVariant pdata)
+{
+    emit sendSystemInfo(id,pid,pdata);
+}
+
+QJsonObject virtualPage::generateConfig()
+{
+    int btnNumber = _column * _row;
+
+    QJsonObject pageJsonOBJ;
+    QJsonArray keyJsonArray;
+
+    pageJsonOBJ.insert("pageIndex",pageIndex);
+
+    for (int i = 0; i < btnNumber; i++ ) {
+        ToolsButton *btn =  static_cast<ToolsButton*>(_btnGroup->button(i));
+        VirtualKey *ptr = btn->getVirtualKeyPtr();
+
+        QJsonObject keyjsonObj;
+        keyjsonObj.insert("type",ptr->type);
+        keyjsonObj.insert("btnID",i);
+        keyjsonObj.insert("itemName",ptr->parentsName);
+        keyjsonObj.insert("childID",ptr->childID);
+        keyjsonObj.insert("config",ptr->getConfig().toJsonObject());
+        keyjsonObj.insert("imageID",ptr->imageID);
+        keyJsonArray.insert(i,keyjsonObj);
+        }
+
+    pageJsonOBJ.insert("keyArray",keyJsonArray);
+    return pageJsonOBJ;
+}
 
 void virtualPage::setBtnClassPtr(int number,VirtualKey *ptr)
 {
     ToolsButton *btn0ptr = static_cast<ToolsButton*>(_btnGroup->button(number));
     btn0ptr->setVirtualKeyPtr(ptr);
+}
+
+void virtualPage::revertSystemInfo(int number, QVariant pid ,QVariant pdata)
+{
+    if( number < 0 )
+    {
+        return;
+    }
+    else
+    {
+        ToolsButton *btn =  static_cast<ToolsButton*>(_btnGroup->button(number));
+        btn->revertSystemInfo(pid,pdata);
+    }
+}
+
+void virtualPage::sendSystemInfoToAll(QVariant pid,QVariant pdata)
+{
+    int btnNumber = _column * _row;
+    for (int i = 0; i < btnNumber; i++ ) {
+        ToolsButton *btn =  static_cast<ToolsButton*>(_btnGroup->button(i));
+        btn->sendSystemInfo(i,pid,pdata);
+    }
 }

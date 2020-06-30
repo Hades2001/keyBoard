@@ -21,9 +21,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
+      <y>10</y>
       <width>251</width>
-      <height>641</height>
+      <height>671</height>
      </rect>
     </property>
     <property name="focusPolicy">
@@ -32,13 +32,13 @@
     <property name="styleSheet">
      <string notr="true">QTreeWidget{  
     background-color: #5B677A;  
-    font-size:25px;  
-	margin:10px 8px 10px 8px;  
+    font-size:18px;  
+	margin:5px 8px 5px 8px;  
     color: white;  
 }  
 
 QTreeWidget::item{  
-    margin:10px 8px 10px 8px;  
+    margin:8px 8px 8px 8px;  
     background: #5B677A;  
 	background-clip: margin;
 }
@@ -103,9 +103,9 @@ QTreeWidget::branch:open:has-children:has-siblings  {
    <widget class="QScrollArea" name="scrollArea">
     <property name="geometry">
      <rect>
-      <x>269</x>
-      <y>479</y>
-      <width>541</width>
+      <x>410</x>
+      <y>480</y>
+      <width>391</width>
       <height>201</height>
      </rect>
     </property>
@@ -117,7 +117,7 @@ QTreeWidget::branch:open:has-children:has-siblings  {
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>539</width>
+       <width>389</width>
        <height>199</height>
       </rect>
      </property>
@@ -131,6 +131,58 @@ QTreeWidget::branch:open:has-children:has-siblings  {
       <width>521</width>
       <height>401</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lab_Image">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>480</y>
+      <width>121</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Image</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>610</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="Cb_Config">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>20</y>
+      <width>121</width>
+      <height>32</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bn_Save">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>20</y>
+      <width>71</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save</string>
     </property>
    </widget>
   </widget>

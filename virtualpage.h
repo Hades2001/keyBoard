@@ -3,11 +3,16 @@
 
 #include <QWidget>
 #include <QButtonGroup>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include "toolsbutton.h"
 #include "plugininterface.h"
 #include "keytimer.h"
 #include "virtualkey.h"
+
+
 
 namespace Ui {
 class virtualPage;
@@ -25,6 +30,12 @@ public:
 public:
     void creatPage();
     void setBtnClassPtr(int,VirtualKey *);
+    void revertSystemInfo(int, QVariant,QVariant);
+    void sendSystemInfoToAll(QVariant,QVariant);
+    QJsonObject generateConfig();
+
+public slots:
+    void sendInfo(int id, QVariant pid,QVariant pdata);
 
 private:
     Ui::virtualPage *ui;
@@ -36,7 +47,6 @@ private:
     int _column = 4;
     int _row = 3;
     QButtonGroup *_btnGroup;
-
 signals:
     void sendData(int, QByteArray);
     void sendSystemInfo(int, QVariant,QVariant);

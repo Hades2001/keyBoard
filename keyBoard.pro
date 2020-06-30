@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    keyconfig.cpp \
         main.cpp \
         mainwindow.cpp \
     toolsbutton.cpp \
@@ -36,6 +37,7 @@ SOURCES += \
     key_mkdir.cpp
 
 HEADERS += \
+    keyconfig.h \
         mainwindow.h \
     toolsbutton.h \
     plugininterface.h \

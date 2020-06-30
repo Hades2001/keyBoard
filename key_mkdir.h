@@ -7,23 +7,18 @@
 class key_mkdir : public VirtualKey
 {
 public:
-    key_mkdir(int type);
+    key_mkdir();
 
 protected:
     void keypressed(bool) {;}
     void upDatePic(QPixmap) {;}
-    void keypressedGUI(){;}
-    void keyDoubleClickGUI(){;}
-    void revertSystemInfo(QVariant,QVariant){;}
-    void createdVirtual(){;}
-
-signals:
-    void sendData(QByteArray);
-    void updateGUI(QPixmap pic);
-    void sendSystemInfo(QVariant,QVariant);
+    void keypressedGUI();
+    void keyDoubleClickGUI();
+    void revertSystemInfo(QVariant,QVariant);
+    void createdVirtual();
 
 private:
-    virtualPage *_newpage;
+    int _pageIndex = -1;
 };
 
 #endif // KEY_MKDIR_H
