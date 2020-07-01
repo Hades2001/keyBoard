@@ -25,20 +25,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    imagemap.cpp \
     keyconfig.cpp \
         main.cpp \
         mainwindow.cpp \
+    pluginmap.cpp \
     toolsbutton.cpp \
     funtiontree.cpp \
     keytimer.cpp \
     virtualpage.cpp \
     systools.cpp \
-    pulginmap.cpp \
     key_mkdir.cpp
 
 HEADERS += \
+    imagemap.h \
     keyconfig.h \
         mainwindow.h \
+    pluginmap.h \
     toolsbutton.h \
     plugininterface.h \
     virtualkey.h \
@@ -46,7 +49,6 @@ HEADERS += \
     keytimer.h \
     virtualpage.h \
     systools.h \
-    pulginmap.h \
     key_mkdir.h
 
 FORMS += \

@@ -133,33 +133,17 @@ QTreeWidget::branch:open:has-children:has-siblings  {
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="Lab_Image">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>480</y>
-      <width>121</width>
-      <height>120</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Image</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="bn_image">
     <property name="geometry">
      <rect>
       <x>260</x>
-      <y>610</y>
+      <y>480</y>
       <width>141</width>
-      <height>61</height>
+      <height>141</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string/>
     </property>
    </widget>
    <widget class="QComboBox" name="Cb_Config">

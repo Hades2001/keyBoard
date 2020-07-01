@@ -63,6 +63,12 @@ void virtualPage::creatPage()
 
             });
 
+            connect(btn0,&ToolsButton::pressed,this,[=](int number){
+                _btnGroup->setExclusive(true);
+                emit btnpressed(number,getBtnClassPtr(number));
+            });
+
+
             connect(btn0,&ToolsButton::sendSystemInfo,this,&virtualPage::sendInfo);
         }
     }
@@ -102,12 +108,12 @@ int virtualPage::creatPageFromConfigFile(QJsonArray jsonConfig)
                 return -1;
             }
             QString itemName = jsonBtnOBJ["itemName"].toString();
-            int ChildID = jsonBtnOBJ["childID"].toInt();
+            QString childName = jsonBtnOBJ["childName"].toString();
 
-            qDebug()<<QString::number(BtnID)<<itemName<<QString::number(ChildID);
+            //qDebug()<<QString::number(BtnID)<<itemName<<QString::number(ChildID);
 
             ToolsButton *btn0 = new ToolsButton(this);
-            _btnGroup->addButton(btn0,y*_column + x);
+            _btnGroup->addButton(btn0,BtnID);
             btn0->setGeometry(x * 110 ,y * 110,100,100);
             btn0->show();
 
@@ -127,14 +133,16 @@ int virtualPage::creatPageFromConfigFile(QJsonArray jsonConfig)
 
             });
 
+            connect(btn0,&ToolsButton::pressed,this,[=](int number){
+                _btnGroup->setExclusive(true);
+                emit btnpressed(number,getBtnClassPtr(number));
+            });
+
             connect(btn0,&ToolsButton::sendSystemInfo,this,&virtualPage::sendInfo);
 
+            PluginInterface *plugin = uPluginMap.Map[QString(itemName)];
 
-            PluginInterface *plugin = uPulginMap.Map[QString(itemName)];
-            VirtualKey *VirtualKeyptr = plugin->getpluginChildPtr(quint16(ChildID));
-            VirtualKeyptr->type = jsonBtnOBJ["type"].toInt();
-            VirtualKeyptr->parentsName = itemName;
-            VirtualKeyptr->childID = ChildID;
+            VirtualKey *VirtualKeyptr = plugin->creatChildPtr(childName);
 
             btn0->setVirtualKeyPtr(VirtualKeyptr);
         }
@@ -171,18 +179,15 @@ int virtualPage::setBtnFromConfigFile(QJsonArray jsonConfig)
                 return -1;
             }
             QString itemName = jsonBtnOBJ["itemName"].toString();
-            int ChildID = jsonBtnOBJ["childID"].toInt();
+            QString childName = jsonBtnOBJ["childName"].toString();
             int type = jsonBtnOBJ["type"].toInt();
-            qDebug()<<QString::number(BtnID)<<itemName<<QString::number(ChildID);
 
             if( type != 0 )
             {
-                PluginInterface *plugin = uPulginMap.Map[QString(itemName)];
-                VirtualKey *VirtualKeyptr = plugin->getpluginChildPtr(quint16(ChildID));
-                VirtualKeyptr->type = type;
-                VirtualKeyptr->parentsName = itemName;
-                VirtualKeyptr->childID = ChildID;
+                PluginInterface *plugin = uPluginMap.Map[QString(itemName)];
 
+                VirtualKey *VirtualKeyptr = plugin->creatChildPtr(childName);
+                VirtualKeyptr->type = type;
                 setBtnClassPtr(BtnID,VirtualKeyptr);
 
                 QJsonObject jsonkeyconfigOBJ = jsonBtnOBJ["config"].toObject();
@@ -215,7 +220,7 @@ QJsonObject virtualPage::generateConfig()
         keyjsonObj.insert("type",ptr->type);
         keyjsonObj.insert("btnID",i);
         keyjsonObj.insert("itemName",ptr->parentsName);
-        keyjsonObj.insert("childID",ptr->childID);
+        keyjsonObj.insert("childName",ptr->childName);
         keyjsonObj.insert("config",ptr->getConfig().toJsonObject());
         keyjsonObj.insert("imageID",ptr->imageID);
         keyJsonArray.insert(i,keyjsonObj);
@@ -229,6 +234,18 @@ void virtualPage::setBtnClassPtr(int number,VirtualKey *ptr)
 {
     ToolsButton *btn0ptr = static_cast<ToolsButton*>(_btnGroup->button(number));
     btn0ptr->setVirtualKeyPtr(ptr);
+}
+
+void virtualPage::removeBtnClassPtr(int index)
+{
+    ToolsButton *btn0ptr = static_cast<ToolsButton*>(_btnGroup->button(index));
+    btn0ptr->removeVirtualKeyPtr();
+}
+
+VirtualKey* virtualPage::getBtnClassPtr(int index)
+{
+    ToolsButton *btn0ptr = static_cast<ToolsButton*>(_btnGroup->button(index));
+    return  btn0ptr->getVirtualKeyPtr();
 }
 
 void virtualPage::revertSystemInfo(int number, QVariant pid ,QVariant pdata)

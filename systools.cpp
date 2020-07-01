@@ -2,33 +2,21 @@
 
 sysTools::sysTools(QObject *parent)
 {
-    Q_UNUSED(parent);   
+    Q_UNUSED(parent);
+
+    pluginNameStr = "SystemTools";
+
+    metaMap.insert("make_dir", key_mkdir::staticMetaObject);
+    metaMap.insert("kTimer", KeyTimer::staticMetaObject);
+
+    childImage_t makedirImage;
+    makedirImage.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/dir.png"));
+    makedirImage.imageList.insert(1,VirtualKey::Image_t(":/icons/icon/buckdir.png"));
+    childImageMap.insert("make_dir",makedirImage);
+
+    childImage_t kTimerImage;
+    kTimerImage.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/branch_open.png"));
+    childImageMap.insert("kTimer",kTimerImage);
 
 }
 
-VirtualKey* sysTools::getpluginChildPtr(quint16 number)
-{
-    VirtualKey* newVirtualKey = nullptr;
-    switch( number )
-    {
-        case kMkdir : newVirtualKey = new key_mkdir;break;
-        case kTimer : newVirtualKey = new KeyTimer;break;
-        case kTick : newVirtualKey = new KeyTimer;break;
-        default: newVirtualKey = nullptr; break;
-    }
-
-    return newVirtualKey;
-}
-
-QString sysTools::getpluginChildName(quint16 number)
-{
-    QString name;
-    switch( number )
-    {
-        case kMkdir : name = QString("make dir");break;
-        case kTimer : name = QString("kTimer");break;
-        case kTick : name = QString("kTick");break;
-        default:break;
-    }
-    return name;
-}

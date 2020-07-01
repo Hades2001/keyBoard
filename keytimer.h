@@ -7,11 +7,16 @@
 
 class KeyTimer : public VirtualKey
 {
+    Q_OBJECT
 public:
-    KeyTimer();
+    Q_INVOKABLE KeyTimer();
 protected:
     void keypressed(bool);
     void upDatePic(QPixmap);
+    void createdVirtual()
+    {
+        imageID = _imageList[0].imageID;
+    }
 };
 
 #endif // KEYTIMER_H

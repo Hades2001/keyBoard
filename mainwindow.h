@@ -19,7 +19,7 @@
 #include "virtualpage.h"
 
 #include "systools.h"
-#include "pulginmap.h"
+#include "pluginmap.h"
 
 
 namespace Ui {
@@ -35,8 +35,10 @@ public:
     ~MainWindow();
     void flushTreeWidget();
     int getEmptypageIndex();
+    virtualPage *creatNewPage(int column, int row, int *index);
     int mkNewpage(int column, int row);
     int mkDirpage(int num, int column, int row);
+    int removePage(int pageIndex);
 
     void saveConfig();
     int readFromConfig();
@@ -49,6 +51,7 @@ private:
     sysTools _systools;
     QMap <int, virtualPage*> pageMap;
     int _CurrentPageIndex = -1;
+    int _removePageDeep = 0;
 
 public slots:
     void sysMsgSlots(int, QVariant,QVariant);

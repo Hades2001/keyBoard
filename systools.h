@@ -15,14 +15,12 @@ public:
         kTick,
         kMax,
     };
+
     sysTools(QObject *parent = nullptr);
     QString pluginName(){ return QString("SystemTools");}
-    quint16 getPluginsNumber(){ return quint16(kMax);}
-    VirtualKey* getpluginChildPtr(quint16 number);
-    QString getpluginChildName(quint16 number);
-
 
 private:
+
 };
 
 #endif // SYSTOOLS_H

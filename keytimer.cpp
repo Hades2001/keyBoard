@@ -2,9 +2,7 @@
 
 KeyTimer::KeyTimer()
 {
-    VirtaulKeyImage_t *picdef = new VirtaulKeyImage_t;
-    picdef->pic.load(":/icons/icon/branch_open.png");
-    picList.append(*picdef);
+    //imageID = _imageList[0].imageID;
     type = kTypeEndpoint;
 }
 
@@ -19,4 +17,5 @@ void KeyTimer::upDatePic(QPixmap Pic)
     qInfo("upDatePic in keytimer");
     Q_UNUSED(Pic)
 }
+
 

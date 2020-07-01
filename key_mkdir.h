@@ -7,9 +7,9 @@
 
 class key_mkdir : public VirtualKey
 {
+    Q_OBJECT
 public:
-    key_mkdir();
-
+    Q_INVOKABLE key_mkdir();
 protected:
     void keypressed(bool) {;}
     void upDatePic(QPixmap) {;}
@@ -24,5 +24,6 @@ protected:
 private:
     int _pageIndex = -1;
 };
+
 
 #endif // KEY_MKDIR_H

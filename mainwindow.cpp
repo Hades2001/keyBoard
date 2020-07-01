@@ -5,10 +5,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
     sysconfig = new keyconfig(this);
-    uPulginMap.Map.insert(_systools.pluginName(),&_systools);
+    uPluginMap.Register(_systools.pluginName(),&_systools);
+    //uPluginMap.Map.insert(_systools.pluginName(),&_systools);
     flushTreeWidget();
 
     /*
@@ -82,10 +82,7 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
         break;
         case VirtualKey::kMsgRemovePage:
             qDebug()<<"remove page"<<dataprm;
-            if( pageMap.contains(dataprm.toInt()))
-            {
-                pageMap.remove(dataprm.toInt());
-            }
+            removePage(dataprm.toInt());
         break;
     default: break;
     }
@@ -101,59 +98,116 @@ int MainWindow::getEmptypageIndex()
     }
     return -1;
 }
-
-int MainWindow::mkNewpage(int column, int row)
+virtualPage* MainWindow::creatNewPage(int column, int row, int* index)
 {
-    int pageIndex = getEmptypageIndex();
-    if( pageIndex == -1 ) return -1;
+    int pageIndex = 0;
+    if( *index == -1 )
+    {
+        pageIndex = getEmptypageIndex();
+        if( pageIndex == -1 ) return nullptr;
+    }
+    else {
+        pageIndex = *index;
+    }
 
     virtualPage* newpage = new virtualPage(this,column,row);
     newpage->pageIndex = pageIndex;
     connect( newpage,&virtualPage::sendSystemInfo,this,&MainWindow::sysMsgSlots);
+    connect( newpage,&virtualPage::btnpressed,this,[=](int id,VirtualKey *ptr){
+        Q_UNUSED(id);
+        if( ptr->type == VirtualKey::kTypeDIR || ptr->type == VirtualKey::kTypeEndpoint )
+        {
+            QPixmap image = uImageMap.findImage(ptr->imageID);
+            ui->bn_image->setIconSize(QSize(100,100));
+            ui->bn_image->setIcon(image);
+        }
+    });
     ui->sW_btn->addWidget(newpage);
     pageMap.insert(pageIndex,newpage);
+
+    *index = pageIndex;
+    return newpage;
+}
+
+int MainWindow::mkNewpage(int column, int row)
+{
+    int pageIndex = -1;
+    creatNewPage(column, row, &pageIndex);
     return pageIndex;
 }
 
 int MainWindow::mkDirpage(int num,int column, int row)
 {
-    int pageIndex = getEmptypageIndex();
-    if( pageIndex == -1 ) return -1;
+    int pageIndex = -1;
+    virtualPage* newpage = creatNewPage(column, row, &pageIndex);
 
-    virtualPage* newpage = new virtualPage(this,column,row);
-    newpage->pageIndex = pageIndex;
-    VirtualKey* keyback = _systools.getpluginChildPtr(0);
-    keyback->parentsName = _systools.pluginName();
-    keyback->childID = 0;
+    VirtualKey *keyback = _systools.creatChildPtr("make_dir");
+
     keyback->type = VirtualKey::kTypeBack;
     newpage->setBtnClassPtr(0,keyback);
     newpage->revertSystemInfo(0,VirtualKey::kMsgsetPageIndex,_CurrentPageIndex);
 
-    connect( newpage,&virtualPage::sendSystemInfo,this,&MainWindow::sysMsgSlots);
-
-    pageMap.insert(pageIndex,newpage);
-    ui->sW_btn->addWidget(newpage);
-    //pageMap.insert(pageMap.size(),newpage);
     pageMap[_CurrentPageIndex]->revertSystemInfo(num,VirtualKey::kMsgsetPageIndex,pageIndex);
 
     return pageIndex;
+}
+
+int MainWindow::removePage(int pageIndex)
+{
+    if( pageMap.contains(pageIndex))
+    {
+        virtualPage* page = pageMap[pageIndex];
+        for (int i = 0; i < page->getBtnMaxNumber(); i++) {
+            VirtualKey* ptr = page->getBtnClassPtr(i);
+            if( ptr->type == VirtualKey::kTypeDIR )
+            {
+                _removePageDeep ++;
+                ptr->type = VirtualKey::kTypeEmptyDIR;
+                ptr->revertSystemInfo(VirtualKey::kMsgRemovePage,0);
+                return -1;
+            }
+            else if ( ptr->type == VirtualKey::kTypeEmptyDIR )
+            {
+                page->removeBtnClassPtr(i);
+            }
+        }
+
+        if( _removePageDeep != 0 )
+        {
+            _removePageDeep--;
+            VirtualKey* ptr = page->getBtnClassPtr(0);
+            if( ptr->type == VirtualKey::kTypeBack )
+            {
+                ptr->revertSystemInfo(VirtualKey::kMsgRemovePage,0);
+            }
+        }
+        pageMap.remove(pageIndex);
+        qInfo("remove %d IndexPade, deep %d",pageIndex,_removePageDeep);
+
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 void MainWindow::flushTreeWidget()
 {
     items.clear();
 
-    QList<QString> pluginKeyList = uPulginMap.Map.keys();
+    QList<QString> pluginKeyList = uPluginMap.Map.keys();
 
     foreach ( QString  name, pluginKeyList )
     {
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget,QStringList(name));
         item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        PluginInterface* Plugptr = uPulginMap.Map[name];
-        int count = Plugptr->getPluginsNumber();
-        for(int i = 0; i < count; i++ )
+        PluginInterface* Plugptr = uPluginMap.Map[name];
+
+        QList<QString> childnameList = Plugptr->metaMap.keys();
+        foreach( QString childname, childnameList )
         {
-            QString namechild = Plugptr->getpluginChildName(quint16(i));
+            QString namechild = childname;
             QTreeWidgetItem* itemchild=new QTreeWidgetItem(item,QStringList(namechild));
             itemchild->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled );
 
@@ -163,8 +217,7 @@ void MainWindow::flushTreeWidget()
 
             //itemchild1->setIcon(0,QIcon(":/icons/icon/arrow.png"));
             itemchild->setData(1,1,QVariant(name));
-            itemchild->setData(0,1,QVariant(i));
-
+            itemchild->setData(0,1,QVariant(childname));
         }
         items.append(item);
     }
@@ -182,18 +235,7 @@ void  MainWindow::saveConfig()
         ptr->revertSystemInfo(-1,VirtualKey::kMsgConfig,QVariant(0));
         QJsonObject jsonOBJ = ptr->generateConfig();
         jsonArray.append(jsonOBJ);
-        //jsonArray.insert(i,jsonOBJ);
     }
-    /*
-    for( int i = 0; i < pageMap.size(); i++ )
-    {
-        virtualPage *ptr = pageMap[i];
-        ptr->revertSystemInfo(-1,VirtualKey::kMsgConfig,QVariant(0));
-        QJsonObject jsonOBJ = ptr->generateConfig();
-        jsonArray.insert(i,jsonOBJ);
-    }
-    */
-
     pagejsonOBJ.insert("pageArray",jsonArray);
     pagejsonOBJ.insert("_CurrentPageIndex",_CurrentPageIndex);
 
@@ -231,16 +273,11 @@ int MainWindow::readFromConfig()
         int pageIndex = jsonOBJ["pageIndex"].toInt();
         QJsonArray jsonArray = jsonOBJ["keyArray"].toArray();
 
-        virtualPage* newpage = new virtualPage(this,4,3);
+        virtualPage* newpage = creatNewPage(4, 3, &pageIndex);
+
         newpage->setBtnFromConfigFile(jsonArray);
-        newpage->pageIndex = pageIndex;
-        connect( newpage,&virtualPage::sendSystemInfo,this,&MainWindow::sysMsgSlots);
-        pageMap.insert(pageIndex,newpage);
-        ui->sW_btn->addWidget(newpage);
     }
 
-
-    //pageJsonObj["page"]
     return 0;
 }
 

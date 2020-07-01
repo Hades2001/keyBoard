@@ -6,12 +6,6 @@
 #include <QPluginLoader>
 #include <QList>
 
-typedef struct VirtaulKeyImage
-{
-    QPixmap pic;
-    quint32 addr;
-}VirtaulKeyImage_t;
-
 class VirtualKey : public QObject
 {
     Q_OBJECT
@@ -20,6 +14,7 @@ public:
     enum VirtualKeyType{
         kTypeIDLE = 0,
         kTypeDIR,
+        kTypeEmptyDIR,
         kTypeBack,
         kTypeCMD,
         kTypeEndpoint,
@@ -47,6 +42,7 @@ public:
     virtual void revertSystemInfo(QVariant,QVariant){;}
     virtual void createdVirtual(){;}
 
+
     virtual QVariant getConfig(){return QJsonObject();}
     virtual void SetConfig(QVariant){;}
 signals:
@@ -55,19 +51,41 @@ signals:
     void sendSystemInfo(QVariant,QVariant);
 
 public:
+    typedef struct childImage
+    {
+        QPixmap childPixmap;
+        int     imageID;
+        inline childImage(QPixmap image)
+        {
+            childPixmap = image;
+        }
+        inline childImage(QString imagePath)
+        {
+            childPixmap.load(imagePath);
+        }
+    }Image_t;
+    QList<VirtualKey::Image_t> _imageList;
+
+    virtual void setImageList(QList<Image_t> list){
+
+        _imageList = list;
+    }
+
     QString Name;
     QString Title;
     int  type = kTypeIDLE;
 
     QString parentsName;
+    QString childName;
+
     int     childID = -1;
     int     imageID = -1;
 
-    QList<VirtaulKeyImage_t> picList;
     QWidget *setWidget = nullptr;
+    //childImage_t image;
 
 private:
-    QPluginLoader *PluginPtr;
+    //QPluginLoader *PluginPtr;
 };
 
 

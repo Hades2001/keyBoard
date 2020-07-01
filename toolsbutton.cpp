@@ -38,16 +38,21 @@ ToolsButton::ToolsButton(QWidget *parent):QPushButton(parent)
         _VirtualKeyptr->keypressedGUI();
         _doubleClickFlag = false;
         _doubleClickTimer->stop();
+
     });
 
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
     _contextMenu = new QMenu;
     _contextMenu->setStyleSheet(QMenuStyleSheet);
-    _addAction = new QAction("add",this);
-    _delAction = new QAction("del",this);
+    _addAction = new QAction("copy",this);
+    _delAction = new QAction("delete",this);
     _contextMenu->addAction(_addAction);
     _contextMenu->addAction(_delAction);
+
+    connect(_delAction,&QAction::triggered,this,[=](){
+        removeVirtualKeyPtr();
+    });
 
 
 }
@@ -82,9 +87,10 @@ void ToolsButton::paintEvent(QPaintEvent *e)
     painter.drawRoundedRect(QRect(5,5,this->width()-10,this->height()-10),20,20);
 
     //painter.drawRoundedRect(QRect(5,5,this->width()-10,this->height()-10));
-    if( _VirtualKeyptr->picList.size() != 0 )
+    if( _VirtualKeyptr->imageID != -1 )
     {
-        painter.drawPixmap(QRect(12,12,this->width()-24,this->height()-24),_VirtualKeyptr->picList.at(0).pic);
+        QPixmap image =  uImageMap.findImage(_VirtualKeyptr->imageID);
+        painter.drawPixmap(QRect(12,12,this->width()-24,this->height()-24),image);
     }
 
     painter.end();
@@ -107,6 +113,7 @@ void ToolsButton::leaveEvent(QEvent *e)
 
 void ToolsButton::setVirtualKeyPtr(VirtualKey *VirtualKeyptr)
 {
+
     if( VirtualKeyptr != nullptr )
     {
         if( _VirtualKeyptr->type == VirtualKey::kTypeDIR )
@@ -133,16 +140,30 @@ void ToolsButton::setVirtualKeyPtr(VirtualKey *VirtualKeyptr)
         {
             this->setIcon(QIcon(pic));
         });
-
+        //qDebug()<<__FILE__<<__LINE__;
 
         _VirtualKeyptr->createdVirtual();
 
+        /*
         if( _VirtualKeyptr->picList.size() != 0 )
         {
             this->setIcon(QIcon(_VirtualKeyptr->picList.at(0).pic));
         }
+        */
+        //qDebug()<<__FILE__<<__LINE__;
 
     }
+}
+void ToolsButton::removeVirtualKeyPtr()
+{
+    if( _VirtualKeyptr->type == VirtualKey::kTypeDIR )
+    {
+        _VirtualKeyptr->revertSystemInfo(VirtualKey::kMsgRemovePage,0);
+    }
+
+    delete _VirtualKeyptr;
+    _VirtualKeyptr = new VirtualKey;
+    setVirtualKeyPtr(new VirtualKey);
 }
 
 void ToolsButton::dragEnterEvent(QDragEnterEvent *event)
@@ -201,14 +222,11 @@ void ToolsButton::dropEvent(QDropEvent *event)
     qDebug()<<itemData;
     qDebug()<<QString(itemName);
 
-    PluginInterface *plugin = uPulginMap.Map[QString(itemName)];
-    VirtualKey *VirtualKeyptr = plugin->getpluginChildPtr(quint16(itemData.at(0)));
+    PluginInterface *plugin = uPluginMap.Map[QString(itemName)];
 
-    VirtualKeyptr->parentsName = itemName;
-    VirtualKeyptr->childID = itemData.at(0);
+    VirtualKey *VirtualKeyptr = plugin->creatChildPtr(QString(itemData));
 
     this->setVirtualKeyPtr(VirtualKeyptr);
-
 
     if (event->source() == this) {
         event->setDropAction(Qt::MoveAction);

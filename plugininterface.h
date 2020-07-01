@@ -13,12 +13,43 @@ public:
     virtual ~PluginInterface(){}
 
     virtual QString pluginName() = 0;
-    virtual quint16 getPluginsNumber() = 0;
-    virtual VirtualKey* getpluginChildPtr(quint16 number) = 0;
-    virtual QString getpluginChildName(quint16 number) = 0;
+    virtual VirtualKey* creatChildPtr(QString name)
+    {
+        VirtualKey *VirtualKeyptr = static_cast<VirtualKey*>(metaMap[name].newInstance());
+        VirtualKeyptr->parentsName = pluginNameStr;
+        VirtualKeyptr->childName = name;
+
+        qInfo("%s :setImageList size:%d",name.toLatin1().data(),childImageMap[name].imageList.size());
+        foreach(VirtualKey::Image_t image,childImageMap[name].imageList)
+        {
+            qInfo("imageID:%d",image.imageID);
+        }
+        VirtualKeyptr->setImageList(childImageMap[name].imageList);
+        return VirtualKeyptr;
+    }
+
+    QMap<QString, QMetaObject> metaMap;
+
+public:
+
+    QPixmap pluginIcon;
+
+
+    typedef struct
+    {
+        QPixmap childIcon;
+        QList<VirtualKey::Image_t> imageList;
+    }childImage_t;
+
+    QMap<QString,childImage_t> childImageMap;
+
+    QString pluginNameStr;
 
 signals:
     void sendData(QByteArray);
+
+private:
+    //QMap<QString, QMetaObject> metaMap;
 
 };
 

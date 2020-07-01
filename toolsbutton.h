@@ -18,8 +18,8 @@
 #include <QContextMenuEvent>
 #include <QMouseEvent>
 
-
-#include "pulginmap.h"
+#include "imagemap.h"
+#include "pluginmap.h"
 
 
 class ToolsButton : public QPushButton
@@ -41,6 +41,7 @@ public:
     VirtualKey* getVirtualKeyPtr(){return _VirtualKeyptr;}
     void setbtnNumber(int num ){ _btnnumber = num; }
     void revertSystemInfo(QVariant pid ,QVariant pdata) { _VirtualKeyptr->revertSystemInfo(pid,pdata);}
+    void removeVirtualKeyPtr();
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);

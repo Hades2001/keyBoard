@@ -30,17 +30,21 @@ void key_mkdir::revertSystemInfo(QVariant pid,QVariant pdata)
 
 void key_mkdir::createdVirtual()
 {
-    VirtaulKeyImage_t *picdef = new VirtaulKeyImage_t;
     if( type == kTypeDIR )
     {
         emit sendSystemInfo(kMsgMkdir,0);
-        picdef->pic.load(":/icons/icon/dir.png");
+        imageID = _imageList[0].imageID;
+        qInfo("imageID:%d",imageID);
+        //picdef->pic = _imageList[0].childPixmap;
+        //picdef->pic.load(":/icons/icon/dir.png");
     }
     else if( type == kTypeBack )
     {
-        picdef->pic.load(":/icons/icon/buckdir.png");
+        imageID = _imageList[1].imageID;
+        qInfo("imageID:%d",imageID);
+        //picdef->pic = _imageList[1].childPixmap;
+        //picdef->pic.load(":/icons/icon/buckdir.png");
     }
-    picList.append(*picdef);
 }
 
 QVariant key_mkdir::getConfig()
@@ -57,3 +61,5 @@ void key_mkdir::SetConfig(QVariant data)
         _pageIndex = jsonObject["pageIndex"].toInt();
     }
 }
+
+

@@ -31,12 +31,15 @@ public:
 public:
     void creatPage();
     void setBtnClassPtr(int,VirtualKey *);
+    void removeBtnClassPtr(int);
+    VirtualKey* getBtnClassPtr(int index);
     void revertSystemInfo(int, QVariant,QVariant);
     void sendSystemInfoToAll(QVariant,QVariant);
     QJsonObject generateConfig();
     int creatPageFromConfigFile(QJsonArray);
     int setBtnFromConfigFile(QJsonArray);
 
+    int getBtnMaxNumber(){return _column*_row;}
 public slots:
     void sendInfo(int id, QVariant pid,QVariant pdata);
 
@@ -53,6 +56,7 @@ private:
 signals:
     void sendData(int, QByteArray);
     void sendSystemInfo(int, QVariant,QVariant);
+    void btnpressed(int,VirtualKey *);
 };
 
 #endif // VIRTUALPAGE_H
