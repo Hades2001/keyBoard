@@ -4,5 +4,6 @@
         <file>icon/branch_open.png</file>
         <file>icon/buckdir.png</file>
         <file>icon/dir.png</file>
+        <file>icon/timer.png</file>
     </qresource>
 </RCC>

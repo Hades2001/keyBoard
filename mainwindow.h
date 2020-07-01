@@ -11,6 +11,8 @@
 #include <QPluginLoader>
 #include <QButtonGroup>
 #include <QMessageBox>
+#include <QListWidget>
+#include "nofocusframedelegate.h"
 #include "toolsbutton.h"
 #include "keyconfig.h"
 #include "plugininterface.h"

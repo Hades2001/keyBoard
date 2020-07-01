@@ -37,6 +37,7 @@ void virtualPage::creatPage()
 {
     _btnGroup = new QButtonGroup();
     this->resize(_column*110 - 10,_row*110 - 10);
+    this->setMinimumSize(_column*110 - 10,_row*110 - 10);
 
     for( int x = 0; x < _column; x++ )
     {

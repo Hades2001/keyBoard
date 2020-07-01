@@ -19,11 +19,6 @@ public:
         VirtualKeyptr->parentsName = pluginNameStr;
         VirtualKeyptr->childName = name;
 
-        qInfo("%s :setImageList size:%d",name.toLatin1().data(),childImageMap[name].imageList.size());
-        foreach(VirtualKey::Image_t image,childImageMap[name].imageList)
-        {
-            qInfo("imageID:%d",image.imageID);
-        }
         VirtualKeyptr->setImageList(childImageMap[name].imageList);
         return VirtualKeyptr;
     }

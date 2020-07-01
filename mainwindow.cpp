@@ -8,8 +8,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     sysconfig = new keyconfig(this);
     uPluginMap.Register(_systools.pluginName(),&_systools);
-    //uPluginMap.Map.insert(_systools.pluginName(),&_systools);
     flushTreeWidget();
+
+    QListWidget* m_ListSerial = new QListWidget(this);
+    m_ListSerial->setItemDelegate(new NoFocusFrameDelegate(this));
+    ui->Cb_Config->setModel(m_ListSerial->model());
+    ui->Cb_Config->setView(m_ListSerial);
+    ui->Cb_Config->addItem("default");
+    ui->Cb_Config->addItem("default");
+    ui->Cb_Config->addItem("default");
+    ui->Cb_Config->addItem("default");
 
     /*
     QDir dir;
@@ -212,7 +220,7 @@ void MainWindow::flushTreeWidget()
             itemchild->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled );
 
             QFont font = this->font();
-            font.setPixelSize(16);
+            font.setPixelSize(18);
             itemchild->setFont(0,font);
 
             //itemchild1->setIcon(0,QIcon(":/icons/icon/arrow.png"));

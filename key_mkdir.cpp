@@ -11,7 +11,6 @@ void key_mkdir::keypressedGUI()
 }
 void key_mkdir::keyDoubleClickGUI()
 {
-    qInfo("DIR Double");
     emit sendSystemInfo( kMsgsetPage,_pageIndex);
 }
 
@@ -34,14 +33,12 @@ void key_mkdir::createdVirtual()
     {
         emit sendSystemInfo(kMsgMkdir,0);
         imageID = _imageList[0].imageID;
-        qInfo("imageID:%d",imageID);
         //picdef->pic = _imageList[0].childPixmap;
         //picdef->pic.load(":/icons/icon/dir.png");
     }
     else if( type == kTypeBack )
     {
         imageID = _imageList[1].imageID;
-        qInfo("imageID:%d",imageID);
         //picdef->pic = _imageList[1].childPixmap;
         //picdef->pic.load(":/icons/icon/buckdir.png");
     }

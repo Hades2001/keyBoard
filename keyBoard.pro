@@ -29,6 +29,7 @@ SOURCES += \
     keyconfig.cpp \
         main.cpp \
         mainwindow.cpp \
+    nofocusframedelegate.cpp \
     pluginmap.cpp \
     toolsbutton.cpp \
     funtiontree.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     imagemap.h \
     keyconfig.h \
         mainwindow.h \
+    nofocusframedelegate.h \
     pluginmap.h \
     toolsbutton.h \
     plugininterface.h \

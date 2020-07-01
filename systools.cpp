@@ -15,7 +15,7 @@ sysTools::sysTools(QObject *parent)
     childImageMap.insert("make_dir",makedirImage);
 
     childImage_t kTimerImage;
-    kTimerImage.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/branch_open.png"));
+    kTimerImage.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/timer.png"));
     childImageMap.insert("kTimer",kTimerImage);
 
 }
