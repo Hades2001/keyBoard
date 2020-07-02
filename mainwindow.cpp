@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->Cb_Config->addItem("default");
     ui->Cb_Config->addItem("default");
     ui->Cb_Config->addItem("default");
-
     /*
     QDir dir;
     dir.setPath("E:/Hades_Work/LCD_KEY/qt/keyBoard/plugins");
@@ -130,6 +129,16 @@ virtualPage* MainWindow::creatNewPage(int column, int row, int* index)
             ui->bn_image->setIcon(image);
             ui->bn_image->setEnabled(true);
             ui->lab_describe->setText(ptr->DescribeName);
+            if( ptr->setWidget != nullptr )
+            {
+                ui->scrollArea->setWidget(ptr->setWidget);
+                ui->scrollArea->setAlignment(Qt::AlignCenter);  // 居中对齐
+                ui->scrollArea->widget()->resize(260, 260);  // 手动调整大小
+            }
+            else
+            {
+                ui->scrollArea->takeWidget();
+            }
             _VirtualKeyptr = ptr;
         }
         else
@@ -137,6 +146,7 @@ virtualPage* MainWindow::creatNewPage(int column, int row, int* index)
             ui->bn_image->setEnabled(false);
             ui->bn_image->setIcon(QPixmap());
             ui->lab_describe->setText(tr("请拖放组件至相应位置"));
+            ui->scrollArea->takeWidget();
             _VirtualKeyptr = nullptr;
         }
     });

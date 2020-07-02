@@ -13,6 +13,7 @@
 #include <QMessageBox>
 #include <QListWidget>
 #include <QFileDialog>
+#include <QPushButton>
 #include "nofocusframedelegate.h"
 #include "treeitemdelegate.h"
 #include "toolsbutton.h"

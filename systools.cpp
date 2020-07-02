@@ -10,6 +10,7 @@ sysTools::sysTools(QObject *parent)
 
     metaMap.insert("make_dir", key_mkdir::staticMetaObject);
     metaMap.insert("kTimer", KeyTimer::staticMetaObject);
+    metaMap.insert("keyExec", keyExec::staticMetaObject);
 
     childImage_t makedirImage;
     makedirImage.DescribeInfo = QObject::tr("创建文件夹");
@@ -25,6 +26,13 @@ sysTools::sysTools(QObject *parent)
     kTimerImage.childIcon = QPixmap(":/icons/icon/timer_icon.png");
     kTimerImage.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/timer.png"));
     childImageMap.insert("kTimer",kTimerImage);
+
+    childImage_t kTimerExec;
+    kTimerExec.DescribeInfo = QObject::tr("运行");
+    kTimerExec.DescribeName = QObject::tr("运行");
+    kTimerExec.childIcon = QPixmap(":/icons/icon/ExecIcon.png");
+    kTimerExec.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/Exec.png"));
+    childImageMap.insert("keyExec",kTimerExec);
 
 }
 

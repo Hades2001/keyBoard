@@ -5,17 +5,11 @@
 
 #include "key_mkdir.h"
 #include "keytimer.h"
+#include "keyexec.h"
 
 class sysTools : public PluginInterface
 {
 public:
-    enum keyList{
-        kMkdir = 0,
-        kTimer,
-        kTick,
-        kMax,
-    };
-
     sysTools(QObject *parent = nullptr);
     QString pluginName(){ return QString("SystemTools");}
 

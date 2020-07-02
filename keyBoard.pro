@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
     imagemap.cpp \
     keyconfig.cpp \
+    keyexec.cpp \
         main.cpp \
         mainwindow.cpp \
     nofocusframedelegate.cpp \
@@ -42,6 +43,7 @@ SOURCES += \
 HEADERS += \
     imagemap.h \
     keyconfig.h \
+    keyexec.h \
         mainwindow.h \
     nofocusframedelegate.h \
     pluginmap.h \
