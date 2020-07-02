@@ -5,5 +5,9 @@
         <file>icon/buckdir.png</file>
         <file>icon/dir.png</file>
         <file>icon/timer.png</file>
+        <file>icon/delete.png</file>
+        <file>icon/adddir_icon.png</file>
+        <file>icon/systemtools_icon.png</file>
+        <file>icon/timer_icon.png</file>
     </qresource>
 </RCC>

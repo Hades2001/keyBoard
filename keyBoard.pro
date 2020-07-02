@@ -36,7 +36,8 @@ SOURCES += \
     keytimer.cpp \
     virtualpage.cpp \
     systools.cpp \
-    key_mkdir.cpp
+    key_mkdir.cpp \
+    treeitemdelegate.cpp
 
 HEADERS += \
     imagemap.h \
@@ -51,7 +52,8 @@ HEADERS += \
     keytimer.h \
     virtualpage.h \
     systools.h \
-    key_mkdir.h
+    key_mkdir.h \
+    treeitemdelegate.h
 
 FORMS += \
         mainwindow.ui \

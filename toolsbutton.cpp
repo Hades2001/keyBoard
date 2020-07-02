@@ -45,8 +45,10 @@ ToolsButton::ToolsButton(QWidget *parent):QPushButton(parent)
 
     _contextMenu = new QMenu;
     _contextMenu->setStyleSheet(QMenuStyleSheet);
+
     _addAction = new QAction("copy",this);
     _delAction = new QAction("delete",this);
+
     _contextMenu->addAction(_addAction);
     _contextMenu->addAction(_delAction);
 

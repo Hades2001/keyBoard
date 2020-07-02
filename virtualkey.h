@@ -78,6 +78,11 @@ public:
     QString parentsName;
     QString childName;
 
+    QString parentDescribeName;
+    QString parentDescribeInfo;
+    QString DescribeName;
+    QString DescribeInfo;
+
     int     childID = -1;
     int     imageID = -1;
 

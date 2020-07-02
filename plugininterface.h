@@ -19,6 +19,12 @@ public:
         VirtualKeyptr->parentsName = pluginNameStr;
         VirtualKeyptr->childName = name;
 
+        VirtualKeyptr->DescribeName = childImageMap[name].DescribeName;
+        VirtualKeyptr->DescribeInfo = childImageMap[name].DescribeInfo;
+
+        VirtualKeyptr->parentDescribeName = DescribeName;
+        VirtualKeyptr->parentDescribeInfo = DescribeInfo;
+
         VirtualKeyptr->setImageList(childImageMap[name].imageList);
         return VirtualKeyptr;
     }
@@ -28,12 +34,15 @@ public:
 public:
 
     QPixmap pluginIcon;
-
+    QString DescribeName;
+    QString DescribeInfo;
 
     typedef struct
-    {
+    {       
         QPixmap childIcon;
         QList<VirtualKey::Image_t> imageList;
+        QString DescribeName;
+        QString DescribeInfo;
     }childImage_t;
 
     QMap<QString,childImage_t> childImageMap;

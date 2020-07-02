@@ -12,7 +12,9 @@
 #include <QButtonGroup>
 #include <QMessageBox>
 #include <QListWidget>
+#include <QFileDialog>
 #include "nofocusframedelegate.h"
+#include "treeitemdelegate.h"
 #include "toolsbutton.h"
 #include "keyconfig.h"
 #include "plugininterface.h"
@@ -22,7 +24,6 @@
 
 #include "systools.h"
 #include "pluginmap.h"
-
 
 namespace Ui {
 class MainWindow;
@@ -55,6 +56,8 @@ private:
     int _CurrentPageIndex = -1;
     int _removePageDeep = 0;
 
+    VirtualKey *_VirtualKeyptr = nullptr;
+
 public slots:
     void sysMsgSlots(int, QVariant,QVariant);
 
@@ -62,6 +65,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
 private slots:
     void on_Bn_Save_pressed();
+    void on_bn_image_pressed();
 };
 
 #endif // MAINWINDOW_H

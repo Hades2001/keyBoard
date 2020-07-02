@@ -128,6 +128,16 @@ virtualPage* MainWindow::creatNewPage(int column, int row, int* index)
             QPixmap image = uImageMap.findImage(ptr->imageID);
             ui->bn_image->setIconSize(QSize(100,100));
             ui->bn_image->setIcon(image);
+            ui->bn_image->setEnabled(true);
+            ui->lab_describe->setText(ptr->DescribeName);
+            _VirtualKeyptr = ptr;
+        }
+        else
+        {
+            ui->bn_image->setEnabled(false);
+            ui->bn_image->setIcon(QPixmap());
+            ui->lab_describe->setText(tr("请拖放组件至相应位置"));
+            _VirtualKeyptr = nullptr;
         }
     });
     ui->sW_btn->addWidget(newpage);
@@ -202,33 +212,44 @@ int MainWindow::removePage(int pageIndex)
 
 void MainWindow::flushTreeWidget()
 {
+    QList<QString> pluginKeyList = uPluginMap.Map.keys();
+    ui->treeWidget->clear();
+    ui->treeWidget->setItemDelegate(new TreeItemDelegate());
     items.clear();
 
-    QList<QString> pluginKeyList = uPluginMap.Map.keys();
-
-    foreach ( QString  name, pluginKeyList )
+    foreach ( QString name, pluginKeyList )
     {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget,QStringList(name));
-        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         PluginInterface* Plugptr = uPluginMap.Map[name];
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget,QStringList(Plugptr->DescribeName));
+        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
+
+        QFont font = this->font();
+        font.setPixelSize(18);
+        item->setFont(0,font);
+        item->setData(0,Qt::UserRole+1,0);
+        item->setData(0,Qt::UserRole+4,Plugptr->pluginIcon);
 
         QList<QString> childnameList = Plugptr->metaMap.keys();
         foreach( QString childname, childnameList )
         {
-            QString namechild = childname;
+            QString namechild = Plugptr->childImageMap[childname].DescribeInfo;
             QTreeWidgetItem* itemchild=new QTreeWidgetItem(item,QStringList(namechild));
             itemchild->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled );
 
             QFont font = this->font();
-            font.setPixelSize(18);
+            font.setPixelSize(15);
             itemchild->setFont(0,font);
 
-            //itemchild1->setIcon(0,QIcon(":/icons/icon/arrow.png"));
-            itemchild->setData(1,1,QVariant(name));
-            itemchild->setData(0,1,QVariant(childname));
+            itemchild->setData(0,Qt::UserRole+1,1);
+            itemchild->setData(0,Qt::UserRole+2,name);
+            itemchild->setData(0,Qt::UserRole+3,childname);
+            itemchild->setData(0,Qt::UserRole+4,Plugptr->childImageMap[childname].childIcon);
         }
         items.append(item);
     }
+    ui->treeWidget->setIconSize(QSize(30,30));
+    ui->treeWidget->setIndentation(0);
+
 }
 
 void  MainWindow::saveConfig()
@@ -337,3 +358,22 @@ void MainWindow::on_Bn_Save_pressed()
     saveConfig();
 }
 
+
+void MainWindow::on_bn_image_pressed()
+{
+    if( _VirtualKeyptr == nullptr ) return;
+    QString Fileurl = QFileDialog::getOpenFileName(this,
+                                                   tr("Open Image"),
+                                                   "./",
+                                                   "Image File (*.png *.jpeg *.jpg *.bmp)");
+    if(Fileurl.isEmpty()) return;
+
+    ui->bn_image->setIconSize(QSize(100,100));
+    ui->bn_image->setIcon(QPixmap(Fileurl));
+
+    int id = uImageMap.RegisterImapge(QPixmap(Fileurl));
+
+    _VirtualKeyptr->imageID = id;
+    this->update();
+
+}

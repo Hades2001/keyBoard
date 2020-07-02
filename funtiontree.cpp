@@ -11,8 +11,9 @@ QMimeData *FuntionTree::mimeData(const QList<QTreeWidgetItem *> items) const
     Q_UNUSED(items);
     QByteArray itemData;
     itemData.resize(2);
-    QString childname = this->currentItem()->data(0,1).toString();
-    QString pluginname = this->currentItem()->data(1,1).toString();
+
+    QString pluginname = this->currentItem()->data(0,Qt::UserRole+2).toString();
+    QString childname = this->currentItem()->data(0,Qt::UserRole+3).toString();
 
     //qDebug() <<"[-----]"<< this->currentItem()->text(0)<<pluginname<<this->currentItem()->data(0,1);
 

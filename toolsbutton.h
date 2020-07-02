@@ -64,8 +64,8 @@ private:
     QAction *_addAction;
     QAction *_delAction;
 
-    QString QMenuStyleSheet="QMenu{background-color: rgb(30, 30, 30);color: rgb(255, 255, 255);}\
-                             QMenu::item {height:30px; width:70px; padding-left:5px; background-color: rgb(30, 30, 30); color: rgb(255, 255, 255);}\
+    QString QMenuStyleSheet="QMenu{background-color: rgb(30, 30, 30);color: rgb(255, 255, 255); width: 120px;}\
+                             QMenu::item {height:30px; width:120px; padding-left:5px; background-color: rgb(30, 30, 30); color: rgb(255, 255, 255);}\
                              QMenu::item:selected{background-color: rgb(255, 200, 0);color: rgb(30, 30, 30)}";
 
 signals:
