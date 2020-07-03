@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #212121;</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -241,7 +241,7 @@ QTreeWidget::branch:open:has-children:has-siblings  {
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <property name="spacing">
-           <number>-1</number>
+           <number>6</number>
           </property>
           <property name="leftMargin">
            <number>0</number>
@@ -329,7 +329,6 @@ QListView::item:hover {
 	background-color:rgb(255, 200, 0);
 }
 
-
 QComboBox QScrollBar::vertical{ /*主体部分*/
     width:5px;
     background-color:rgb(57, 57, 57);
@@ -387,6 +386,8 @@ QComboBox QScrollBar::sub-line::vertical{/*下箭头*/
 	color: rgb(255, 255, 255);
 	background-color: rgb(30, 30, 30);
 	border:1px solid rgb(50,50,50);
+	padding:4px;
+	image: url(:/icons/icon/save.png);
 }
 QPushButton:hover{
 
@@ -454,7 +455,7 @@ QPushButton:pressed{
 }</string>
             </property>
             <property name="text">
-             <string>Save</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -496,7 +497,7 @@ QPushButton:pressed{
 }</string>
             </property>
             <property name="text">
-             <string>Save</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -538,7 +539,7 @@ QPushButton:pressed{
 }</string>
             </property>
             <property name="text">
-             <string>Save</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -580,7 +581,7 @@ QPushButton:pressed{
 }</string>
             </property>
             <property name="text">
-             <string>Save</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -851,7 +852,7 @@ QPushButton:pressed{
            <widget class="QWidget" name="verticalWidget_z" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <property name="spacing">
-              <number>0</number>
+              <number>6</number>
              </property>
              <property name="leftMargin">
               <number>5</number>
@@ -875,7 +876,7 @@ QPushButton:pressed{
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_4">
                 <property name="spacing">
-                 <number>-1</number>
+                 <number>6</number>
                 </property>
                 <property name="leftMargin">
                  <number>0</number>
@@ -1011,39 +1012,7 @@ QPushButton:pressed{
               </widget>
              </item>
              <item>
-              <widget class="QScrollArea" name="scrollArea">
-               <property name="enabled">
-                <bool>true</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">border:transparent;  </string>
-               </property>
-               <property name="widgetResizable">
-                <bool>true</bool>
-               </property>
-               <widget class="QWidget" name="scrollAreaWidgetContents">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>0</y>
-                  <width>375</width>
-                  <height>135</height>
-                 </rect>
-                </property>
-               </widget>
-              </widget>
+              <widget class="QStackedWidget" name="stackedWidget"/>
              </item>
             </layout>
            </widget>

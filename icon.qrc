@@ -11,5 +11,6 @@
         <file>icon/timer_icon.png</file>
         <file>icon/Exec.png</file>
         <file>icon/ExecIcon.png</file>
+        <file>icon/save.png</file>
     </qresource>
 </RCC>

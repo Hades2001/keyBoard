@@ -58,6 +58,7 @@ private:
     int _removePageDeep = 0;
 
     VirtualKey *_VirtualKeyptr = nullptr;
+    QWidget *_nullWidget;
 
 public slots:
     void sysMsgSlots(int, QVariant,QVariant);

@@ -2,11 +2,11 @@
 #define KEYEXEC_H
 
 #include <QWidget>
-#include <QObject>
-#include <QJsonObject>
-#include <QLineEdit>
-#include "virtualkey.h"
-#include "virtualpage.h"
+#include <virtualkey.h>
+#include <QFileDialog>
+#include <QProcess>
+#include <QMessageBox>
+#include <QDebug>
 
 namespace Ui {
 class keyExec;
@@ -15,8 +15,9 @@ class keyExec;
 class keyExec : public VirtualKey
 {
     Q_OBJECT
+
 public:
-    Q_INVOKABLE keyExec();
+    Q_INVOKABLE explicit keyExec(QWidget *parent = nullptr);
     ~keyExec();
 
 protected:
@@ -29,8 +30,22 @@ protected:
 
     QVariant getConfig();
     void SetConfig(QVariant);
+
+    void setEnabledfromFlag();
+
+private slots:
+    void on_radioButton_clicked(bool checked);
+    void on_radioButton_2_clicked(bool checked);
+    void on_lineEdit_2_textChanged(const QString &arg1);
+    void on_pushButton_pressed();
+    void printResult(int,QProcess::ExitStatus);
+
+private:
+    Ui::keyExec *ui;
+    int _choose_flag = 0;
+    QString _execPath;
+    QString _shellPath;
+    QProcess* _Process;
 };
 
 #endif // KEYEXEC_H
-
-///Users/chaoxuanzhe/qt/Lcdkeyboard/keyBoard/keyexec.h:34: warning: Class keyExec inherits from two QObject subclasses QWidget and VirtualKey. This is not supported!

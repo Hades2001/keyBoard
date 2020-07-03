@@ -35,6 +35,7 @@ ToolsButton::ToolsButton(QWidget *parent):QPushButton(parent)
     connect(_doubleClickTimer,&QTimer::timeout,this,[=]()
     {
         emit pressed(_btnnumber);
+        qDebug()<<_VirtualKeyptr->DescribeName;
         _VirtualKeyptr->keypressedGUI();
         _doubleClickFlag = false;
         _doubleClickTimer->stop();

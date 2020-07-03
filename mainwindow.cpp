@@ -18,6 +18,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->Cb_Config->addItem("default");
     ui->Cb_Config->addItem("default");
     ui->Cb_Config->addItem("default");
+
+    this->setStyleSheet("QMainWindow#MainWindow{background-color: rgb(30, 30, 30);}");
+
+    _nullWidget = new QWidget();
+    _nullWidget->setStyleSheet("background-color: transparent");
+    ui->stackedWidget->insertWidget(0,_nullWidget);
     /*
     QDir dir;
     dir.setPath("E:/Hades_Work/LCD_KEY/qt/keyBoard/plugins");
@@ -131,13 +137,12 @@ virtualPage* MainWindow::creatNewPage(int column, int row, int* index)
             ui->lab_describe->setText(ptr->DescribeName);
             if( ptr->setWidget != nullptr )
             {
-                ui->scrollArea->setWidget(ptr->setWidget);
-                ui->scrollArea->setAlignment(Qt::AlignCenter);  // 居中对齐
-                ui->scrollArea->widget()->resize(260, 260);  // 手动调整大小
+                ui->stackedWidget->insertWidget(1,ptr->setWidget);
+                ui->stackedWidget->setCurrentWidget(ptr->setWidget);
             }
             else
             {
-                ui->scrollArea->takeWidget();
+                ui->stackedWidget->setCurrentWidget(_nullWidget);
             }
             _VirtualKeyptr = ptr;
         }
@@ -146,7 +151,7 @@ virtualPage* MainWindow::creatNewPage(int column, int row, int* index)
             ui->bn_image->setEnabled(false);
             ui->bn_image->setIcon(QPixmap());
             ui->lab_describe->setText(tr("请拖放组件至相应位置"));
-            ui->scrollArea->takeWidget();
+            ui->stackedWidget->setCurrentWidget(_nullWidget);
             _VirtualKeyptr = nullptr;
         }
     });

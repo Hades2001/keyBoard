@@ -27,7 +27,6 @@ CONFIG += c++11
 SOURCES += \
     imagemap.cpp \
     keyconfig.cpp \
-    keyexec.cpp \
         main.cpp \
         mainwindow.cpp \
     nofocusframedelegate.cpp \
@@ -38,12 +37,12 @@ SOURCES += \
     virtualpage.cpp \
     systools.cpp \
     key_mkdir.cpp \
-    treeitemdelegate.cpp
+    treeitemdelegate.cpp \
+    keyexec.cpp
 
 HEADERS += \
     imagemap.h \
     keyconfig.h \
-    keyexec.h \
         mainwindow.h \
     nofocusframedelegate.h \
     pluginmap.h \
@@ -55,11 +54,13 @@ HEADERS += \
     virtualpage.h \
     systools.h \
     key_mkdir.h \
-    treeitemdelegate.h
+    treeitemdelegate.h \
+    keyexec.h
 
 FORMS += \
         mainwindow.ui \
-    virtualpage.ui
+    virtualpage.ui \
+    keyexec.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

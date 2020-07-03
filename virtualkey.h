@@ -5,8 +5,9 @@
 #include <QPixmap>
 #include <QPluginLoader>
 #include <QList>
+#include <QWidget>
 
-class VirtualKey : public QObject
+class VirtualKey : public QWidget
 {
     Q_OBJECT
 

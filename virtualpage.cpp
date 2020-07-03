@@ -136,6 +136,7 @@ int virtualPage::creatPageFromConfigFile(QJsonArray jsonConfig)
 
             connect(btn0,&ToolsButton::pressed,this,[=](int number){
                 _btnGroup->setExclusive(true);
+                qDebug()<<"2"<<getBtnClassPtr(number)->DescribeName;
                 emit btnpressed(number,getBtnClassPtr(number));
             });
 
