@@ -14,10 +14,6 @@ keyExec::keyExec(QWidget *parent) :
     ui->lineEdit_2->setEnabled(false);
     ui->radioButton->setChecked(true);
     _choose_flag = 0;
-
-    //_Process = new QProcess(this);
-    //connect(_Process,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(printResult(int,QProcess::ExitStatus)));
-
 }
 
 keyExec::~keyExec()
@@ -109,6 +105,7 @@ void keyExec::setEnabledfromFlag()
         ui->pushButton->setEnabled(false);
         ui->lineEdit_2->setEnabled(true);
     }
+    emit sendSystemInfo(kMsgSaveConfig,0);
 }
 
 void keyExec::on_radioButton_clicked(bool checked)
@@ -140,6 +137,7 @@ void keyExec::on_radioButton_2_clicked(bool checked)
 void keyExec::on_lineEdit_2_textChanged(const QString &arg1)
 {
     _shellPath = arg1;
+    emit sendSystemInfo(kMsgSaveConfig,0);
 }
 
 void keyExec::on_pushButton_pressed()
@@ -151,6 +149,7 @@ void keyExec::on_pushButton_pressed()
    if(filePath.isEmpty()) return;
    _execPath = filePath;
    ui->lineEdit->setText(_execPath);
+   emit sendSystemInfo(kMsgSaveConfig,0);
 }
 
 void keyExec::printResult(int,QProcess::ExitStatus)

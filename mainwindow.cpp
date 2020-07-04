@@ -97,6 +97,10 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
             qDebug()<<"remove page"<<dataprm;
             removePage(dataprm.toInt());
         break;
+        case VirtualKey::kMsgSaveConfig:
+            qDebug()<<"Save Config";
+            saveConfig();
+        break;
     default: break;
     }
 }

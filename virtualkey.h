@@ -29,6 +29,7 @@ public:
         kMsgsetPageIndex,
         kMsgRemovePage,
         kMsgConfig,
+        kMsgSaveConfig,
         kMsgMAX
     };
 

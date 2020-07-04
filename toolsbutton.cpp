@@ -35,7 +35,7 @@ ToolsButton::ToolsButton(QWidget *parent):QPushButton(parent)
     connect(_doubleClickTimer,&QTimer::timeout,this,[=]()
     {
         emit pressed(_btnnumber);
-        qDebug()<<_VirtualKeyptr->DescribeName;
+        //qDebug()<<_VirtualKeyptr->DescribeName;
         _VirtualKeyptr->keypressedGUI();
         _doubleClickFlag = false;
         _doubleClickTimer->stop();
@@ -167,6 +167,7 @@ void ToolsButton::removeVirtualKeyPtr()
     delete _VirtualKeyptr;
     _VirtualKeyptr = new VirtualKey;
     setVirtualKeyPtr(new VirtualKey);
+    emit sendSystemInfo(_btnnumber,VirtualKey::kMsgSaveConfig,0);
 }
 
 void ToolsButton::dragEnterEvent(QDragEnterEvent *event)
@@ -230,6 +231,8 @@ void ToolsButton::dropEvent(QDropEvent *event)
     VirtualKey *VirtualKeyptr = plugin->creatChildPtr(QString(itemData));
 
     this->setVirtualKeyPtr(VirtualKeyptr);
+
+    emit sendSystemInfo(_btnnumber,VirtualKey::kMsgSaveConfig,0);
 
     if (event->source() == this) {
         event->setDropAction(Qt::MoveAction);
