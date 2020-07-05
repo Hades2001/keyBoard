@@ -145,7 +145,7 @@ int virtualPage::creatPageFromConfigFile(QJsonArray jsonConfig)
             PluginInterface *plugin = uPluginMap.Map[QString(itemName)];
 
             VirtualKey *VirtualKeyptr = plugin->creatChildPtr(childName);
-
+            VirtualKeyptr->imageID = jsonBtnOBJ["imageID"].toInt();
             btn0->setVirtualKeyPtr(VirtualKeyptr);
         }
     }
@@ -194,6 +194,7 @@ int virtualPage::setBtnFromConfigFile(QJsonArray jsonConfig)
 
                 QJsonObject jsonkeyconfigOBJ = jsonBtnOBJ["config"].toObject();
                 VirtualKeyptr->SetConfig(jsonkeyconfigOBJ);
+                VirtualKeyptr->imageID = jsonBtnOBJ["imageID"].toInt();
             }
         }
     }

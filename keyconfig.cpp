@@ -159,10 +159,17 @@ int keyconfig::readConfigFile(QString name)
         return -1;
     }
     configDir.cd(name);
+
     if( !configDir.exists("image"))
     {
         return -1;
     }
+
+    QDir imageDir = configDir;
+    imageDir.cd("image");
+
+    _imagePath = imageDir.path();
+    _filepath = configDir.path();
 
     QFile configList(configDir.path() +"/"+ name + ".json");
     if( !configList.exists())

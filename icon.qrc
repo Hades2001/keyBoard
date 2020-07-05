@@ -12,5 +12,8 @@
         <file>icon/Exec.png</file>
         <file>icon/ExecIcon.png</file>
         <file>icon/save.png</file>
+        <file>icon/NoImage.png</file>
+        <file>icon/image.png</file>
+        <file>icon/setting.png</file>
     </qresource>
 </RCC>

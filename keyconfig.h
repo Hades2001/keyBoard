@@ -26,11 +26,14 @@ public:
     int writeDataToConfigFile(QString key,QByteArray data);
     int writeJsonDataToConfigFile(QString key,QVariant data);
     int saveConfig(QString name);
+    QString getImagePath(){return _imagePath;}
     QJsonObject getConfigJsonOBJ(){ return _configJsonOBJ;}
 
 private:
     QJsonObject _configJsonOBJ;
     QString _default;
+    QString _filepath;
+    QString _imagePath;
     QList<QString> _configMap;
 signals:
 

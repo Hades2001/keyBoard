@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     sysconfig = new keyconfig(this);
     uPluginMap.Register(_systools.pluginName(),&_systools);
+
     flushTreeWidget();
 
     QListWidget* m_ListSerial = new QListWidget(this);
@@ -72,6 +73,8 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         ui->sW_btn->setCurrentWidget(pageMap[_CurrentPageIndex]);
     }
+
+    uImageMap.cleanoperatedFlag();
 }
 
 MainWindow::~MainWindow()
@@ -92,10 +95,24 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
             qDebug()<<"kMsgsetPage"<<dataprm;
             ui->sW_btn->setCurrentWidget(pageMap[dataprm.toInt()]);
             _CurrentPageIndex = dataprm.toInt();
+
+            ui->bn_image->setEnabled(false);
+            ui->bn_image->setIcon(QPixmap());
+            ui->lab_describe->setText(tr("请拖放组件至相应位置"));
+            ui->stackedWidget->setCurrentWidget(_nullWidget);
+            _VirtualKeyptr = nullptr;
+
         break;
         case VirtualKey::kMsgRemovePage:
             qDebug()<<"remove page"<<dataprm;
             removePage(dataprm.toInt());
+
+            ui->bn_image->setEnabled(false);
+            ui->bn_image->setIcon(QPixmap());
+            ui->lab_describe->setText(tr("请拖放组件至相应位置"));
+            ui->stackedWidget->setCurrentWidget(_nullWidget);
+            _VirtualKeyptr = nullptr;
+
         break;
         case VirtualKey::kMsgSaveConfig:
             qDebug()<<"Save Config";
@@ -273,6 +290,35 @@ void MainWindow::flushTreeWidget()
 
 void  MainWindow::saveConfig()
 {
+    QJsonObject configJsonOBJ = sysconfig->getConfigJsonOBJ();
+
+    //QJsonObject PluginjsonOBJ;
+
+    QJsonArray PluginJsonArray;
+    QJsonObject PluginjsonOBJ;
+
+    QList<QString> keys = uPluginMap.Map.keys();
+    foreach( QString name , keys )
+    {
+        QList<QString> ChildKeys = uPluginMap.Map[name]->childImageMap.keys();
+        QJsonObject pluginChildJsonOBJ;
+
+        foreach( QString ChildName , ChildKeys )
+        {
+            PluginInterface::childImage_t child = uPluginMap.Map[name]->childImageMap[ChildName];
+            QJsonArray pluginChildJsonArrray;
+            foreach( VirtualKey::Image_t image_t, child.imageList )
+            {
+                int id = image_t.imageID;
+                pluginChildJsonArrray.append(id);
+            }
+            pluginChildJsonOBJ.insert(ChildName,pluginChildJsonArrray);
+        }
+        PluginjsonOBJ.insert(name,pluginChildJsonOBJ);
+    }
+
+    sysconfig->writeJsonDataToConfigFile("plugin",PluginjsonOBJ);
+
     QJsonArray  jsonArray;
     QJsonObject pagejsonOBJ;
 
@@ -288,12 +334,23 @@ void  MainWindow::saveConfig()
     pagejsonOBJ.insert("_CurrentPageIndex",_CurrentPageIndex);
 
     sysconfig->writeJsonDataToConfigFile("page",pagejsonOBJ);
-    sysconfig->saveConfig("default");
 
+    QJsonObject imageJsonOBJ = uImageMap.saveImage();
+    sysconfig->writeJsonDataToConfigFile("image",imageJsonOBJ);
+
+    sysconfig->saveConfig("default");
 }
+
 int MainWindow::readFromConfig()
 {
     QJsonObject pageJsonObj = sysconfig->getConfigJsonOBJ();
+
+    if( pageJsonObj.contains("image"))
+    {
+        QJsonObject ImageJsonOBJ = pageJsonObj["image"].toObject();
+        uImageMap.readFromJsonConfig(ImageJsonOBJ);
+    }
+
     if( !pageJsonObj.contains("page"))
     {
         QMessageBox::warning(this,"Config Error","JSON file is damaged");
@@ -377,10 +434,27 @@ void MainWindow::on_Bn_Save_pressed()
     saveConfig();
 }
 
-
 void MainWindow::on_bn_image_pressed()
 {
+
     if( _VirtualKeyptr == nullptr ) return;
+
+    ImagesManage* imageDialog = new ImagesManage(this);
+    int id = imageDialog->getImageID();
+    qInfo("image id = %d",id);
+    delete imageDialog;
+    saveConfig();
+
+    if( id != -1 )
+    {
+        _VirtualKeyptr->imageID = id;
+    }
+
+    ui->bn_image->setIconSize(QSize(100,100));
+    ui->bn_image->setIcon(uImageMap.findImage(id));
+
+    this->update();
+    /*
     QString Fileurl = QFileDialog::getOpenFileName(this,
                                                    tr("Open Image"),
                                                    "./",
@@ -390,9 +464,16 @@ void MainWindow::on_bn_image_pressed()
     ui->bn_image->setIconSize(QSize(100,100));
     ui->bn_image->setIcon(QPixmap(Fileurl));
 
-    int id = uImageMap.RegisterImapge(QPixmap(Fileurl));
+    int id = uImageMap.replaceImage(_VirtualKeyptr->imageID,QPixmap(Fileurl),imageMap::kANormal);
 
     _VirtualKeyptr->imageID = id;
     this->update();
+    */
+}
 
+void MainWindow::on_Bn_Save_2_pressed()
+{
+    ImagesManage* imageDialog = new ImagesManage(this);
+    int id = imageDialog->getImageID();
+    delete imageDialog;
 }

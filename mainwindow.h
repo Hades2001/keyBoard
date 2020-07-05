@@ -22,6 +22,7 @@
 #include "keytimer.h"
 #include "virtualkey.h"
 #include "virtualpage.h"
+#include "imagesmanage.h"
 
 #include "systools.h"
 #include "pluginmap.h"
@@ -68,6 +69,7 @@ protected:
 private slots:
     void on_Bn_Save_pressed();
     void on_bn_image_pressed();
+    void on_Bn_Save_2_pressed();
 };
 
 #endif // MAINWINDOW_H

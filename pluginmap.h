@@ -6,6 +6,7 @@
 #include <QDebug>
 #include "plugininterface.h"
 #include "imagemap.h"
+#include "keyconfig.h"
 #include "virtualkey.h"
 
 class pluginMap

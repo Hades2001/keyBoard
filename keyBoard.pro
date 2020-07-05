@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -38,7 +39,9 @@ SOURCES += \
     systools.cpp \
     key_mkdir.cpp \
     treeitemdelegate.cpp \
-    keyexec.cpp
+    keyexec.cpp \
+    serialsocket.cpp \
+    imagesmanage.cpp
 
 HEADERS += \
     imagemap.h \
@@ -55,12 +58,15 @@ HEADERS += \
     systools.h \
     key_mkdir.h \
     treeitemdelegate.h \
-    keyexec.h
+    keyexec.h \
+    serialsocket.h \
+    imagesmanage.h
 
 FORMS += \
         mainwindow.ui \
     virtualpage.ui \
-    keyexec.ui
+    keyexec.ui \
+    imagesmanage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
