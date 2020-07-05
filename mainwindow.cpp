@@ -95,23 +95,25 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
             qDebug()<<"kMsgsetPage"<<dataprm;
             ui->sW_btn->setCurrentWidget(pageMap[dataprm.toInt()]);
             _CurrentPageIndex = dataprm.toInt();
-
+            /*
             ui->bn_image->setEnabled(false);
             ui->bn_image->setIcon(QPixmap());
             ui->lab_describe->setText(tr("请拖放组件至相应位置"));
             ui->stackedWidget->setCurrentWidget(_nullWidget);
             _VirtualKeyptr = nullptr;
+            */
 
         break;
         case VirtualKey::kMsgRemovePage:
             qDebug()<<"remove page"<<dataprm;
             removePage(dataprm.toInt());
-
+            /*
             ui->bn_image->setEnabled(false);
             ui->bn_image->setIcon(QPixmap());
             ui->lab_describe->setText(tr("请拖放组件至相应位置"));
             ui->stackedWidget->setCurrentWidget(_nullWidget);
             _VirtualKeyptr = nullptr;
+            */
 
         break;
         case VirtualKey::kMsgSaveConfig:
@@ -364,6 +366,7 @@ int MainWindow::readFromConfig()
     }
     _CurrentPageIndex = jsonPageOBJ["_CurrentPageIndex"].toInt();
 
+
     QJsonArray pageArray = jsonPageOBJ["pageArray"].toArray();
     if( pageArray.size() == 0 )
     {
@@ -474,6 +477,6 @@ void MainWindow::on_bn_image_pressed()
 void MainWindow::on_Bn_Save_2_pressed()
 {
     ImagesManage* imageDialog = new ImagesManage(this);
-    int id = imageDialog->getImageID();
+    imageDialog->getImageID();
     delete imageDialog;
 }
