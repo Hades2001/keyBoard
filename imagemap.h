@@ -30,6 +30,7 @@ public:
     }imageBox_t;
 
     QMap<int,imageBox_t> sysImageList;
+    //QHash<int,imageBox_t> sysImageList;
 
 public:
     explicit imageMap(QObject *parent = nullptr);
