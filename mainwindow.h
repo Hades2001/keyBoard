@@ -60,6 +60,7 @@ private:
 
     VirtualKey *_VirtualKeyptr = nullptr;
     QWidget *_nullWidget;
+    bool    _configFlag = false;
 
 public slots:
     void sysMsgSlots(int, QVariant,QVariant);
@@ -69,7 +70,7 @@ protected:
 private slots:
     void on_Bn_Save_pressed();
     void on_bn_image_pressed();
-    void on_Bn_Save_2_pressed();
+    void on_Bn_ImageManage_pressed();
 };
 
 #endif // MAINWINDOW_H

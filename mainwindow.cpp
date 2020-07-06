@@ -75,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     uImageMap.cleanoperatedFlag();
+    _configFlag = true;
 }
 
 MainWindow::~MainWindow()
@@ -117,8 +118,11 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
 
         break;
         case VirtualKey::kMsgSaveConfig:
-            qDebug()<<"Save Config";
-            saveConfig();
+            if( _configFlag == true )
+            {
+                qDebug()<<"Save Config";
+                saveConfig();
+            }
         break;
     default: break;
     }
@@ -294,8 +298,6 @@ void  MainWindow::saveConfig()
 {
     QJsonObject configJsonOBJ = sysconfig->getConfigJsonOBJ();
 
-    //QJsonObject PluginjsonOBJ;
-
     QJsonArray PluginJsonArray;
     QJsonObject PluginjsonOBJ;
 
@@ -393,43 +395,7 @@ int MainWindow::readFromConfig()
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
-    /*
-    Q_UNUSED(event);
-    qDebug()<<__LINE__;
-    QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
-    if( child == nullptr ) return;
 
-    qDebug()<<__LINE__;
-    QPixmap pixmap = *child->pixmap();
-
-    qDebug()<<__LINE__;
-    QByteArray itemData;
-    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << pixmap << QPoint(event->pos() - child->pos());
-//! [1]
-
-//! [2]
-    QMimeData *mimeData = new QMimeData;
-    mimeData->setData("application/x-dnditemdata", itemData);
-//! [2]
-
-//! [3]
-    QDrag *drag = new QDrag(this);
-    drag->setMimeData(mimeData);
-    drag->setPixmap(pixmap);
-    drag->setHotSpot(event->pos() - child->pos());
-
-    QPixmap tempPixmap = pixmap;
-
-    child->setPixmap(tempPixmap);
-
-    if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
-        child->close();
-    } else {
-        child->show();
-        child->setPixmap(pixmap);
-    }
-    */
 }
 
 void MainWindow::on_Bn_Save_pressed()
@@ -451,30 +417,13 @@ void MainWindow::on_bn_image_pressed()
     if( id != -1 )
     {
         _VirtualKeyptr->imageID = id;
+        ui->bn_image->setIconSize(QSize(100,100));
+        ui->bn_image->setIcon(uImageMap.findImage(id));
     }
-
-    ui->bn_image->setIconSize(QSize(100,100));
-    ui->bn_image->setIcon(uImageMap.findImage(id));
-
     this->update();
-    /*
-    QString Fileurl = QFileDialog::getOpenFileName(this,
-                                                   tr("Open Image"),
-                                                   "./",
-                                                   "Image File (*.png *.jpeg *.jpg *.bmp)");
-    if(Fileurl.isEmpty()) return;
-
-    ui->bn_image->setIconSize(QSize(100,100));
-    ui->bn_image->setIcon(QPixmap(Fileurl));
-
-    int id = uImageMap.replaceImage(_VirtualKeyptr->imageID,QPixmap(Fileurl),imageMap::kANormal);
-
-    _VirtualKeyptr->imageID = id;
-    this->update();
-    */
 }
 
-void MainWindow::on_Bn_Save_2_pressed()
+void MainWindow::on_Bn_ImageManage_pressed()
 {
     ImagesManage* imageDialog = new ImagesManage(this);
     imageDialog->getImageID();

@@ -418,7 +418,7 @@ QPushButton:pressed{
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="Bn_Save_2">
+           <widget class="QPushButton" name="Bn_ImageManage">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -442,19 +442,16 @@ QPushButton:pressed{
 	color: rgb(255, 255, 255);
 	background-color: rgb(30, 30, 30);
 	border:1px solid rgb(50,50,50);
-padding:4px;
+	padding:4px;
 	image: url(:/icons/icon/image.png);
-margin:0px 0px 0px 4px
+	margin:0px 0px 0px 4px
 }
 QPushButton:hover{
-
+	background-color: rgb(30, 30, 30);
 	border:1px solid rgb(255,200,0);
 	color: rgb(255, 255, 255);
 }
-QPushButton:pressed{
-	background-color: rgb(255, 200, 0);
-	color: rgb(30, 30, 30);
-}</string>
+</string>
             </property>
             <property name="text">
              <string/>
@@ -826,10 +823,6 @@ QPushButton:hover{
 
 	border:1px solid rgb(255,200,0);
 	color: rgb(255, 255, 255);
-}
-QPushButton:pressed{
-	background-color: rgb(255, 200, 0);
-	color: rgb(30, 30, 30);
 }</string>
                </property>
                <property name="text">
