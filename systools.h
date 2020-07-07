@@ -6,6 +6,7 @@
 #include "key_mkdir.h"
 #include "keytimer.h"
 #include "keyexec.h"
+#include "keydefine.h"
 
 class sysTools : public PluginInterface
 {

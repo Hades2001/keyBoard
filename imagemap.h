@@ -7,7 +7,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#include "plugininterface.h"
 #include "keyconfig.h"
+#include "pluginmap.h"
 
 class imageMap : public QObject
 {
@@ -44,6 +46,8 @@ public:
     void cleanoperatedFlag(){ _operatedFlag = false; }
     QJsonObject saveImage();
     int readFromJsonConfig(QJsonObject);
+
+    int readPluginImageFromJson(QJsonObject jsonOBJ);
 signals:
 
 public slots:

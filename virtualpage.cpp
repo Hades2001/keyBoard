@@ -193,6 +193,9 @@ int virtualPage::setBtnFromConfigFile(QJsonArray jsonConfig)
                 setBtnClassPtr(BtnID,VirtualKeyptr);
 
                 QJsonObject jsonkeyconfigOBJ = jsonBtnOBJ["config"].toObject();
+
+                //qDebug()<<"BTN:"<<QString::number(BtnID)<<" "<<jsonkeyconfigOBJ;
+
                 VirtualKeyptr->SetConfig(jsonkeyconfigOBJ);
                 VirtualKeyptr->imageID = jsonBtnOBJ["imageID"].toInt();
             }

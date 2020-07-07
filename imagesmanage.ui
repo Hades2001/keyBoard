@@ -65,8 +65,14 @@ QListWidget::item:selected
 }
 </string>
    </property>
+   <property name="showDropIndicator" stdset="0">
+    <bool>false</bool>
+   </property>
    <property name="dragDropMode">
     <enum>QAbstractItemView::NoDragDrop</enum>
+   </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::ExtendedSelection</enum>
    </property>
    <property name="viewMode">
     <enum>QListView::IconMode</enum>

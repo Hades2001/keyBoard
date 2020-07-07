@@ -15,5 +15,7 @@
         <file>icon/NoImage.png</file>
         <file>icon/image.png</file>
         <file>icon/setting.png</file>
+        <file>icon/keydefine.png</file>
+        <file>icon/keydefine_icon.png</file>
     </qresource>
 </RCC>

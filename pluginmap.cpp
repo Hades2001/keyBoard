@@ -9,7 +9,12 @@ pluginMap::~pluginMap()
 {
 
 }
-
+void pluginMap::Register(QString name,PluginInterface *ptr)
+{
+    Map.insert(name,ptr);
+    //QList<PluginInterface::childImage_t*> NewimagePtrList;
+}
+/*
 void pluginMap::Register(QString name,PluginInterface *ptr)
 {
     Map.insert(name,ptr);
@@ -43,6 +48,7 @@ void pluginMap::Register(QString name,PluginInterface *ptr)
                     for ( int i = 0; i < size; i++ ) {
                         QPixmap image = ptr->childImageMap[childname].imageList[i].childPixmap;
                         int imageID = uImageMap.RegisterImapge(image,imageMap::kASysImage);
+                        qDebug()<<"Register Plugin"<<name<<":"<<childname<<" Image "<<QString::number(i)<<" ID "<<imageID;
                         ptr->childImageMap[childname].imageList[i].imageID = imageID;
                     }
                 }
@@ -63,7 +69,7 @@ void pluginMap::Register(QString name,PluginInterface *ptr)
         }
     }
 }
-
+*/
 pluginMap uPluginMap;
 
 

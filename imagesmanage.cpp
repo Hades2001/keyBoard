@@ -12,10 +12,13 @@ ImagesManage::ImagesManage(QWidget *parent) :
     QList<int> keys = uImageMap.sysImageList.keys();
     ui->listWidget->setIconSize(QSize(60,60));
     ui->listWidget->setViewMode(QListView::IconMode);
+    ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     foreach( int id, keys )
     {
+
         imageMap::imageBox_t imagebox = uImageMap.sysImageList[id];
         QListWidgetItem* item=new QListWidgetItem(imagebox.image,QString("id=%1").arg(id));
+        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
 
         item->setData(Qt::UserRole + 1,id);
         item->setData(Qt::UserRole + 2,imagebox.Attributes);
@@ -36,10 +39,61 @@ int ImagesManage::getImageID()
     return _imageID;
 }
 
+void ImagesManage::checkBtnState()
+{
+    QList<QListWidgetItem *> list = ui->listWidget->selectedItems();
+    if( list.size() > 1 )
+    {
+        ui->bn_choose->setEnabled(false);
+    }
+    else if( list.size() == 1 )
+    {
+        ui->bn_choose->setEnabled(true);
+        QListWidgetItem* item = list.at(0);
+        int Attributes = item->data(Qt::UserRole + 2).toInt();
+        if( Attributes != imageMap::kANormal )
+        {
+            ui->bn_delete->setEnabled(false);
+        }
+        else
+        {
+            ui->bn_delete->setEnabled(true);
+        }
+    }
+    else
+    {
+        ui->bn_delete->setEnabled(false);
+    }
+}
+
+void ImagesManage::removeImages()
+{
+    QList<QListWidgetItem *> list = ui->listWidget->selectedItems();
+    if( list.size() >= 1 )
+    {
+        foreach( QListWidgetItem * item, list )
+        {
+            int imageID = item->data(Qt::UserRole + 1).toInt();
+            int Attributes = item->data(Qt::UserRole + 2).toInt();
+            if( Attributes == imageMap::kANormal )
+            {
+                uImageMap.removePic(imageID );
+                int SelectedRow = ui->listWidget->row(item);
+                if( SelectedRow != -1 )
+                {
+                    ui->listWidget->takeItem(SelectedRow);
+                    delete item;
+                }
+            }
+        }
+    }
+}
+
 void ImagesManage::on_bn_close_pressed()
 {
     this->close();
 }
+
 
 void ImagesManage::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
@@ -50,20 +104,25 @@ void ImagesManage::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 void ImagesManage::on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
     Q_UNUSED(previous);
-    _imageID = current->data(Qt::UserRole + 1).toInt();
-    ui->bn_image->setIconSize(QSize(100,100));
-    ui->bn_image->setIcon(current->icon());
 
-    int Attributes = current->data(Qt::UserRole + 2).toInt();
-    if( Attributes != imageMap::kANormal )
+    QList<QListWidgetItem *> list = ui->listWidget->selectedItems();
+    if( list.size() == 1 )
     {
-        ui->bn_delete->setEnabled(false);
+        _imageID = current->data(Qt::UserRole + 1).toInt();
+        ui->bn_image->setIconSize(QSize(100,100));
+        ui->bn_image->setIcon(current->icon());
+
+        int Attributes = current->data(Qt::UserRole + 2).toInt();
+        if( Attributes != imageMap::kANormal )
+        {
+            ui->bn_delete->setEnabled(false);
+        }
+        else
+        {
+            ui->bn_delete->setEnabled(true);
+        }
+        _current = current;
     }
-    else
-    {
-        ui->bn_delete->setEnabled(true);
-    }
-    _current = current;
 }
 
 void ImagesManage::on_bn_add_pressed()
@@ -79,18 +138,41 @@ void ImagesManage::on_bn_add_pressed()
         QPixmap image = QPixmap(name).scaled(240,240,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
         int id = uImageMap.RegisterImapge(image,imageMap::kANormal);
         QListWidgetItem* item=new QListWidgetItem(image,QString("id=%1").arg(id));
+        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
         ui->listWidget->addItem(item);
     }
 }
 
 void ImagesManage::on_bn_delete_pressed()
 {
-    if( _imageID != -1 )
+    removeImages();
+}
+
+void ImagesManage::on_listWidget_itemSelectionChanged()
+{
+    QList<QListWidgetItem *> list = ui->listWidget->selectedItems();
+    if( list.size() > 1 )
     {
-        uImageMap.removePic(_imageID );
-        if( ui->listWidget->currentRow() != -1 )
+        ui->bn_choose->setEnabled(false);
+    }
+    else if( list.size() == 1 )
+    {
+        ui->bn_choose->setEnabled(true);
+    }
+    else
+    {
+        ui->bn_delete->setEnabled(false);
+    }
+}
+
+void ImagesManage::keyPressEvent(QKeyEvent *event)
+{
+    if ( event->type() == QEvent::KeyPress )
+    {
+        if(( event->key() == Qt::Key_Delete )||( event->key() == Qt::Key_Backspace ))
         {
-            ui->listWidget->takeItem(ui->listWidget->currentRow());
+            qDebug()<<"Delete";
+            removeImages();
         }
     }
 }

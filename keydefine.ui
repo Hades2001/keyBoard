@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>keyDefine</class>
+ <widget class="QWidget" name="keyDefine">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>385</width>
+    <height>117</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(33, 33, 33);</string>
+  </property>
+  <widget class="QKeySequenceEdit" name="keySequenceEdit">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>40</y>
+     <width>211</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit
+{
+	color: rgb(255, 255, 255);
+	background-color: rgb(30, 30, 30);
+	border:1px solid rgb(50,50,50);
+	padding-left:10px;
+	height:30px;
+}
+QLineEdit:hover
+{
+	border:1px solid rgb(255,200,0);
+}
+
+QLineEdit:selected:active
+{
+border:1px solid rgb(255,200,0);
+}
+
+QLineEdit:!enabled{
+	color: rgb(100, 100, 100)
+}
+
+</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

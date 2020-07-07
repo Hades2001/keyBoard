@@ -41,7 +41,8 @@ SOURCES += \
     treeitemdelegate.cpp \
     keyexec.cpp \
     serialsocket.cpp \
-    imagesmanage.cpp
+    imagesmanage.cpp \
+    keydefine.cpp
 
 HEADERS += \
     imagemap.h \
@@ -60,13 +61,15 @@ HEADERS += \
     treeitemdelegate.h \
     keyexec.h \
     serialsocket.h \
-    imagesmanage.h
+    imagesmanage.h \
+    keydefine.h
 
 FORMS += \
         mainwindow.ui \
     virtualpage.ui \
     keyexec.ui \
-    imagesmanage.ui
+    imagesmanage.ui \
+    keydefine.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

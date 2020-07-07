@@ -87,6 +87,7 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
 {
     Q_UNUSED(num);
     int idNum = IDprm.toInt();
+    if( _configFlag == false ) return;
     switch( idNum )
     {
         case VirtualKey::kMsgMkdir:
@@ -96,33 +97,28 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
             qDebug()<<"kMsgsetPage"<<dataprm;
             ui->sW_btn->setCurrentWidget(pageMap[dataprm.toInt()]);
             _CurrentPageIndex = dataprm.toInt();
-            /*
+
             ui->bn_image->setEnabled(false);
             ui->bn_image->setIcon(QPixmap());
             ui->lab_describe->setText(tr("请拖放组件至相应位置"));
             ui->stackedWidget->setCurrentWidget(_nullWidget);
             _VirtualKeyptr = nullptr;
-            */
+
 
         break;
         case VirtualKey::kMsgRemovePage:
             qDebug()<<"remove page"<<dataprm;
             removePage(dataprm.toInt());
-            /*
+
             ui->bn_image->setEnabled(false);
             ui->bn_image->setIcon(QPixmap());
             ui->lab_describe->setText(tr("请拖放组件至相应位置"));
             ui->stackedWidget->setCurrentWidget(_nullWidget);
             _VirtualKeyptr = nullptr;
-            */
-
         break;
         case VirtualKey::kMsgSaveConfig:
-            if( _configFlag == true )
-            {
-                qDebug()<<"Save Config";
-                saveConfig();
-            }
+            qDebug()<<"Save Config";
+            saveConfig();
         break;
     default: break;
     }
@@ -355,6 +351,12 @@ int MainWindow::readFromConfig()
         uImageMap.readFromJsonConfig(ImageJsonOBJ);
     }
 
+    if( pageJsonObj.contains("plugin"))
+    {
+        QJsonObject pluginJsonOBJ = pageJsonObj["plugin"].toObject();
+        uImageMap.readPluginImageFromJson(pluginJsonOBJ);
+    }
+
     if( !pageJsonObj.contains("page"))
     {
         QMessageBox::warning(this,"Config Error","JSON file is damaged");
@@ -381,6 +383,8 @@ int MainWindow::readFromConfig()
         QJsonObject jsonOBJ = pageArray[i].toObject();
 
         int pageIndex = jsonOBJ["pageIndex"].toInt();
+
+        qInfo("Page Index: %d",pageIndex);
         QJsonArray jsonArray = jsonOBJ["keyArray"].toArray();
 
         virtualPage* newpage = creatNewPage(4, 3, &pageIndex);

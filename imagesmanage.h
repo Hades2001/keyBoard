@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "imagemap.h"
+#include <QKeyEvent>
 #include <QListWidgetItem>
 #include <QScrollBar>
 #include <QFileDialog>
@@ -18,17 +19,19 @@ public:
     explicit ImagesManage(QWidget *parent = nullptr);
     ~ImagesManage();
     int getImageID();
+    void checkBtnState();
+    void removeImages();
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
 
 private slots:
     void on_bn_close_pressed();
-
     void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
-
     void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-
     void on_bn_add_pressed();
-
     void on_bn_delete_pressed();
+    void on_listWidget_itemSelectionChanged();
 
 private:
     Ui::ImagesManage *ui;
