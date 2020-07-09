@@ -38,11 +38,12 @@ public:
     QString DescribeInfo;
 
     typedef struct
-    {       
+    {
         QPixmap childIcon;
         QList<VirtualKey::Image_t> imageList;
         QString DescribeName;
         QString DescribeInfo;
+        int     type;
     }childImage_t;
 
     QMap<QString,childImage_t> childImageMap;

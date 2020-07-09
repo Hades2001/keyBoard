@@ -17,6 +17,7 @@ sysTools::sysTools(QObject *parent)
     childImage_t makedirImage;
     makedirImage.DescribeInfo = QObject::tr("创建文件夹");
     makedirImage.DescribeName = QObject::tr("文件夹");
+    makedirImage.type = VirtualKey::kTypeDIR;
     makedirImage.childIcon = QPixmap(":/icons/icon/adddir_icon.png");
     makedirImage.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/dir.png"));
     makedirImage.imageList.insert(1,VirtualKey::Image_t(":/icons/icon/buckdir.png"));
@@ -25,6 +26,7 @@ sysTools::sysTools(QObject *parent)
     childImage_t kTimerImage;
     kTimerImage.DescribeInfo = QObject::tr("创建定时器");
     kTimerImage.DescribeName = QObject::tr("定时器");
+    kTimerImage.type = VirtualKey::kTypeEndpoint;
     kTimerImage.childIcon = QPixmap(":/icons/icon/timer_icon.png");
     kTimerImage.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/timer.png"));
     childImageMap.insert("kTimer",kTimerImage);
@@ -32,6 +34,7 @@ sysTools::sysTools(QObject *parent)
     childImage_t kTimerExec;
     kTimerExec.DescribeInfo = QObject::tr("运行");
     kTimerExec.DescribeName = QObject::tr("运行");
+    kTimerExec.type = VirtualKey::kTypeEndpoint;
     kTimerExec.childIcon = QPixmap(":/icons/icon/ExecIcon.png");
     kTimerExec.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/Exec.png"));
     childImageMap.insert("keyExec",kTimerExec);
@@ -39,6 +42,7 @@ sysTools::sysTools(QObject *parent)
     childImage_t keyDefine;
     keyDefine.DescribeInfo = QObject::tr("宏按键");
     keyDefine.DescribeName = QObject::tr("宏按键");
+    keyDefine.type = VirtualKey::kTypeEndpoint;
     keyDefine.childIcon = QPixmap(":/icons/icon/keydefine_icon.png");
     keyDefine.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/keydefine.png"));
     childImageMap.insert("keyDefine",keyDefine);

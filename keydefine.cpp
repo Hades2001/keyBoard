@@ -42,9 +42,20 @@ void keyDefine::createdVirtual()
 
 QVariant keyDefine::getConfig()
 {
+    //ui->keySequenceEdit->
     return 0;
 }
 void keyDefine::SetConfig(QVariant)
 {
+
+}
+
+void keyDefine::on_keySequenceEdit_keySequenceChanged(const QKeySequence &keySequence)
+{
+    qDebug()<<keySequence;
+    QString str = keySequence.toString();
+    QKeySequence _key;
+    _key.fromString(str);
+    qDebug()<<keySequence;
 
 }

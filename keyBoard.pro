@@ -30,6 +30,8 @@ SOURCES += \
     keyconfig.cpp \
         main.cpp \
         mainwindow.cpp \
+    multilistwidget.cpp \
+    multioperation.cpp \
     nofocusframedelegate.cpp \
     pluginmap.cpp \
     toolsbutton.cpp \
@@ -48,6 +50,8 @@ HEADERS += \
     imagemap.h \
     keyconfig.h \
         mainwindow.h \
+    multilistwidget.h \
+    multioperation.h \
     nofocusframedelegate.h \
     pluginmap.h \
     toolsbutton.h \
@@ -66,6 +70,7 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui \
+    multioperation.ui \
     virtualpage.ui \
     keyexec.ui \
     imagesmanage.ui \

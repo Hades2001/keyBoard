@@ -19,8 +19,8 @@
   <widget class="QKeySequenceEdit" name="keySequenceEdit">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>40</y>
+     <x>40</x>
+     <y>20</y>
      <width>211</width>
      <height>40</height>
     </rect>

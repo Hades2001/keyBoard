@@ -21,6 +21,7 @@ public:
     int getImageID();
     void checkBtnState();
     void removeImages();
+    void flushIconWidget();
 
 protected:
     void keyPressEvent(QKeyEvent *event);

@@ -17,5 +17,6 @@
         <file>icon/setting.png</file>
         <file>icon/keydefine.png</file>
         <file>icon/keydefine_icon.png</file>
+        <file>icon/syncicon.png</file>
     </qresource>
 </RCC>

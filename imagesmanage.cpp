@@ -8,6 +8,23 @@ ImagesManage::ImagesManage(QWidget *parent) :
     ui->setupUi(this);
 
     ui->listWidget->verticalScrollBar()->setStyleSheet(QScrollBarQss);
+}
+
+ImagesManage::~ImagesManage()
+{
+    delete ui;
+}
+
+void ImagesManage::flushIconWidget()
+{
+    int count = ui->listWidget->count();
+
+    for ( int i = 0; i < count; i++ ) {
+        QListWidgetItem* ptr = ui->listWidget->item(i);
+        delete  ptr;
+    }
+
+    ui->listWidget->clear();
 
     QList<int> keys = uImageMap.sysImageList.keys();
     ui->listWidget->setIconSize(QSize(60,60));
@@ -15,7 +32,6 @@ ImagesManage::ImagesManage(QWidget *parent) :
     ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     foreach( int id, keys )
     {
-
         imageMap::imageBox_t imagebox = uImageMap.sysImageList[id];
         QListWidgetItem* item=new QListWidgetItem(imagebox.image,QString("id=%1").arg(id));
         item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
@@ -27,14 +43,9 @@ ImagesManage::ImagesManage(QWidget *parent) :
     ui->bn_delete->setEnabled(false);
 }
 
-ImagesManage::~ImagesManage()
-{
-    delete ui;
-}
-
-
 int ImagesManage::getImageID()
 {
+    flushIconWidget();
     this->exec();
     return _imageID;
 }
@@ -133,14 +144,14 @@ void ImagesManage::on_bn_add_pressed()
                                                       "Image File (*.png *.jpeg *.jpg *.bmp)");
 
     if(list.isEmpty()) return;
+
     foreach( QString name, list )
     {
         QPixmap image = QPixmap(name).scaled(240,240,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
-        int id = uImageMap.RegisterImapge(image,imageMap::kANormal);
-        QListWidgetItem* item=new QListWidgetItem(image,QString("id=%1").arg(id));
-        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        ui->listWidget->addItem(item);
+        uImageMap.RegisterImapge(image,imageMap::kANormal);
     }
+
+    flushIconWidget();
 }
 
 void ImagesManage::on_bn_delete_pressed()

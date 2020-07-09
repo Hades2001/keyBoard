@@ -29,6 +29,9 @@ protected:
     void SetConfig(QVariant);
 
 
+private slots:
+    void on_keySequenceEdit_keySequenceChanged(const QKeySequence &keySequence);
+
 private:
     Ui::keyDefine *ui;
 };

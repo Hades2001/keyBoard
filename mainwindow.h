@@ -23,6 +23,7 @@
 #include "virtualkey.h"
 #include "virtualpage.h"
 #include "imagesmanage.h"
+#include "multioperation.h"
 
 #include "systools.h"
 #include "pluginmap.h"

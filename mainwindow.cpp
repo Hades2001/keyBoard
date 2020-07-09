@@ -76,6 +76,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     uImageMap.cleanoperatedFlag();
     _configFlag = true;
+
+    MultiOperation *wid = new MultiOperation(this);
+    ui->sW_btn->addWidget(wid);
+    ui->sW_btn->setCurrentWidget(wid);
+
 }
 
 MainWindow::~MainWindow()
@@ -267,6 +272,7 @@ void MainWindow::flushTreeWidget()
         item->setData(0,Qt::UserRole+1,0);
         item->setData(0,Qt::UserRole+4,Plugptr->pluginIcon);
 
+
         QList<QString> childnameList = Plugptr->metaMap.keys();
         foreach( QString childname, childnameList )
         {
@@ -282,6 +288,7 @@ void MainWindow::flushTreeWidget()
             itemchild->setData(0,Qt::UserRole+2,name);
             itemchild->setData(0,Qt::UserRole+3,childname);
             itemchild->setData(0,Qt::UserRole+4,Plugptr->childImageMap[childname].childIcon);
+            itemchild->setData(0,Qt::UserRole+5,Plugptr->childImageMap[childname].type);
         }
         items.append(item);
     }
@@ -356,6 +363,10 @@ int MainWindow::readFromConfig()
         QJsonObject pluginJsonOBJ = pageJsonObj["plugin"].toObject();
         uImageMap.readPluginImageFromJson(pluginJsonOBJ);
     }
+    else {
+        uImageMap.readPluginImageFromJson(QJsonObject());
+    }
+
 
     if( !pageJsonObj.contains("page"))
     {

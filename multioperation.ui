@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MultiOperation</class>
+ <widget class="QWidget" name="MultiOperation">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>455</width>
+    <height>402</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="MultiListWidget" name="listWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>391</width>
+     <height>381</height>
+    </rect>
+   </property>
+   <property name="dragDropMode">
+    <enum>QAbstractItemView::DragDrop</enum>
+   </property>
+   <property name="defaultDropAction">
+    <enum>Qt::IgnoreAction</enum>
+   </property>
+   <item>
+    <property name="text">
+     <string>1</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>2</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>3</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MultiListWidget</class>
+   <extends>QListWidget</extends>
+   <header>multilistwidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
