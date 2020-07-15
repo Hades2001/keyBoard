@@ -28,8 +28,10 @@ CONFIG += c++11
 SOURCES += \
     imagemap.cpp \
     keyconfig.cpp \
+    keymultiopera.cpp \
         main.cpp \
         mainwindow.cpp \
+    multilistdelegate.cpp \
     multilistwidget.cpp \
     multioperation.cpp \
     nofocusframedelegate.cpp \
@@ -49,7 +51,9 @@ SOURCES += \
 HEADERS += \
     imagemap.h \
     keyconfig.h \
+    keymultiopera.h \
         mainwindow.h \
+    multilistdelegate.h \
     multilistwidget.h \
     multioperation.h \
     nofocusframedelegate.h \
@@ -69,6 +73,7 @@ HEADERS += \
     keydefine.h
 
 FORMS += \
+    keymultiopera.ui \
         mainwindow.ui \
     multioperation.ui \
     virtualpage.ui \

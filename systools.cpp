@@ -12,7 +12,7 @@ sysTools::sysTools(QObject *parent)
     metaMap.insert("kTimer", KeyTimer::staticMetaObject);
     metaMap.insert("keyExec", keyExec::staticMetaObject);
     metaMap.insert("keyDefine", keyDefine::staticMetaObject);
-
+    metaMap.insert("MultiOperation", keyMultiOpera::staticMetaObject);
 
     childImage_t makedirImage;
     makedirImage.DescribeInfo = QObject::tr("创建文件夹");
@@ -46,6 +46,14 @@ sysTools::sysTools(QObject *parent)
     keyDefine.childIcon = QPixmap(":/icons/icon/keydefine_icon.png");
     keyDefine.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/keydefine.png"));
     childImageMap.insert("keyDefine",keyDefine);
+
+    childImage_t keyMultiOperation;
+    keyMultiOperation.DescribeInfo = QObject::tr("创建多操作");
+    keyMultiOperation.DescribeName = QObject::tr("多操作");
+    keyMultiOperation.type = VirtualKey::kTypeMultiOperation;
+    keyMultiOperation.childIcon = QPixmap(":/icons/icon/keydefine_icon.png");
+    keyMultiOperation.imageList.insert(0,VirtualKey::Image_t(":/icons/icon/keydefine.png"));
+    childImageMap.insert("MultiOperation",keyMultiOperation);
 
 }
 

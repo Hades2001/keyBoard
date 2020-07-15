@@ -66,7 +66,11 @@ void virtualPage::creatPage()
 
             connect(btn0,&ToolsButton::pressed,this,[=](int number){
                 _btnGroup->setExclusive(true);
-                emit btnpressed(number,getBtnClassPtr(number));
+                emit sendSystemInfo(number,
+                                    VirtualKey::kMsgShowKeyPtr,
+                                    QVariant::fromValue(getBtnClassPtr(number)));
+
+                //emit btnpressed(number,getBtnClassPtr(number));
             });
 
 
@@ -136,8 +140,11 @@ int virtualPage::creatPageFromConfigFile(QJsonArray jsonConfig)
 
             connect(btn0,&ToolsButton::pressed,this,[=](int number){
                 _btnGroup->setExclusive(true);
-                //qDebug()<<"2"<<getBtnClassPtr(number)->DescribeName;
-                emit btnpressed(number,getBtnClassPtr(number));
+                emit sendSystemInfo(number,
+                                    VirtualKey::kMsgShowKeyPtr,
+                                    QVariant::fromValue(getBtnClassPtr(number)));
+
+                //emit btnpressed(number,getBtnClassPtr(number));
             });
 
             connect(btn0,&ToolsButton::sendSystemInfo,this,&virtualPage::sendInfo);

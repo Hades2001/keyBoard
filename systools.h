@@ -7,6 +7,7 @@
 #include "keytimer.h"
 #include "keyexec.h"
 #include "keydefine.h"
+#include "keymultiopera.h"
 
 class sysTools : public PluginInterface
 {

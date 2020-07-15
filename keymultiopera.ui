@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>keyMultiOpera</class>
+ <widget class="QWidget" name="keyMultiOpera">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>385</width>
+    <height>117</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(33, 33, 33);</string>
+  </property>
+  <widget class="QComboBox" name="cb_operation">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>20</y>
+     <width>150</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>150</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>150</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox
+{
+	border:transparent;   
+	color: rgb(255, 255, 255);
+    background-color: #212121;  
+    padding: 0px 0px 0px 20px;
+}
+QComboBox:hover
+{
+	color: #212121;  
+    background-color: rgb(255, 200, 0);
+}
+
+QComboBox QAbstractItemView{
+	background-color: #212121; 
+    border:1px solid rgb(109,109,109);
+    border:2px;
+}
+QComboBox::drop-down:disabled {
+    	width: 20px;
+   	border:transparent; 
+	background-color: #212121; 
+}
+QComboBox::drop-down {
+    width: 0px;
+    border:transparent; 
+    background-color: #212121; 
+
+}
+QComboBox::down-arrow {
+    padding:10px;
+	color: rgb(255, 255, 255);
+}
+QComboBox QAbstractItemView:item{
+    border:transparent; 
+	color: rgb(255, 255, 255);
+	background-color: #212121; 
+	padding: 2px 2px 2px 18px;
+	height:22px;
+}
+QListView::item {
+    background: white;
+	border:transparent;
+}
+ 
+QListView::item:hover {
+    	color: #212121;
+	background-color:rgb(255, 200, 0);
+}
+
+QComboBox QScrollBar::vertical{ /*主体部分*/
+    width:5px;
+    background-color:rgb(57, 57, 57);
+    border:none;
+}
+QComboBox QScrollBar::handle::vertical{ /*滑块主体*/
+    border-radius:5px;
+    width: 5px;
+    background:rgb(0, 170, 255);
+}
+QComboBox QScrollBar::handle::vertical::hover{
+    background:rgb(50,50,50);
+}
+QComboBox QScrollBar::add-line::vertical{/*上箭头*/
+    border:none;
+}
+QComboBox QScrollBar::sub-line::vertical{/*下箭头*/
+    border:none;
+}</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>顺序操作</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>随机操作</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>倒序操作</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="lab_describe">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>111</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>华文细黑</family>
+     <pointsize>13</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>操作类型</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

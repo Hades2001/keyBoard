@@ -77,9 +77,9 @@ MainWindow::MainWindow(QWidget *parent) :
     uImageMap.cleanoperatedFlag();
     _configFlag = true;
 
-    MultiOperation *wid = new MultiOperation(this);
-    ui->sW_btn->addWidget(wid);
-    ui->sW_btn->setCurrentWidget(wid);
+    //MultiOperation *wid = new MultiOperation(this);
+    //ui->sW_btn->addWidget(wid);
+    //ui->sW_btn->setCurrentWidget(wid);
 
 }
 
@@ -92,13 +92,14 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
 {
     Q_UNUSED(num);
     int idNum = IDprm.toInt();
-    if( _configFlag == false ) return;
     switch( idNum )
     {
         case VirtualKey::kMsgMkdir:
+            if( _configFlag == false ) return;
             mkDirpage(num,4,3);
           break;
         case VirtualKey::kMsgsetPage:
+            if( _configFlag == false ) return;
             qDebug()<<"kMsgsetPage"<<dataprm;
             ui->sW_btn->setCurrentWidget(pageMap[dataprm.toInt()]);
             _CurrentPageIndex = dataprm.toInt();
@@ -109,9 +110,9 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
             ui->stackedWidget->setCurrentWidget(_nullWidget);
             _VirtualKeyptr = nullptr;
 
-
         break;
         case VirtualKey::kMsgRemovePage:
+            if( _configFlag == false ) return;
             qDebug()<<"remove page"<<dataprm;
             removePage(dataprm.toInt());
 
@@ -122,8 +123,39 @@ void MainWindow::sysMsgSlots(int num, QVariant IDprm, QVariant dataprm)
             _VirtualKeyptr = nullptr;
         break;
         case VirtualKey::kMsgSaveConfig:
+            if( _configFlag == false ) return;
             qDebug()<<"Save Config";
             saveConfig();
+        break;
+        case VirtualKey::kMsgAddMultiPage:
+            {
+                qDebug()<<"kMsgAddMultiPage";
+                MultiOperation* pageptr = dataprm.value<MultiOperation*>();
+                pageMap[_CurrentPageIndex]->revertSystemInfo(num,VirtualKey::kMsgsetPageIndex,_CurrentPageIndex);
+                ui->sW_btn->addWidget(pageptr);
+            }
+        break;
+        case VirtualKey::kMsgSetMultiPage:
+            {
+                qDebug()<<"kMsgSetMultiPage";
+                MultiOperation* pageptr = dataprm.value<MultiOperation*>();
+                ui->sW_btn->setCurrentWidget(pageptr);
+            }
+        break;
+        case VirtualKey::kMsgRemoveMultiPage:
+            {
+                MultiOperation* pageptr = dataprm.value<MultiOperation*>();
+                ui->sW_btn->removeWidget(pageptr);
+            }
+        break;
+        case VirtualKey::kMsgShowKeyPtr:
+            {
+                VirtualKey *ptr = dataprm.value<VirtualKey *>();
+                showVirtualPtr(ptr);
+            }
+        break;
+        case VirtualKey::kMsgHideKeyPtr:
+
         break;
     default: break;
     }
@@ -139,6 +171,39 @@ int MainWindow::getEmptypageIndex()
     }
     return -1;
 }
+
+void MainWindow::showVirtualPtr(VirtualKey *ptr)
+{
+    if( ptr->type == VirtualKey::kTypeDIR ||
+        ptr->type == VirtualKey::kTypeMultiOperation ||
+        ptr->type == VirtualKey::kTypeEndpoint )
+    {
+        QPixmap image = uImageMap.findImage(ptr->imageID);
+        ui->bn_image->setIconSize(QSize(100,100));
+        ui->bn_image->setIcon(image);
+        ui->bn_image->setEnabled(true);
+        ui->lab_describe->setText(ptr->DescribeName);
+        if( ptr->setWidget != nullptr )
+        {
+            ui->stackedWidget->insertWidget(1,ptr->setWidget);
+            ui->stackedWidget->setCurrentWidget(ptr->setWidget);
+        }
+        else
+        {
+            ui->stackedWidget->setCurrentWidget(_nullWidget);
+        }
+        _VirtualKeyptr = ptr;
+    }
+    else
+    {
+        ui->bn_image->setEnabled(false);
+        ui->bn_image->setIcon(QPixmap());
+        ui->lab_describe->setText(tr("请拖放组件至相应位置"));
+        ui->stackedWidget->setCurrentWidget(_nullWidget);
+        _VirtualKeyptr = nullptr;
+    }
+}
+
 virtualPage* MainWindow::creatNewPage(int column, int row, int* index)
 {
     int pageIndex = 0;
@@ -156,7 +221,9 @@ virtualPage* MainWindow::creatNewPage(int column, int row, int* index)
     connect( newpage,&virtualPage::sendSystemInfo,this,&MainWindow::sysMsgSlots);
     connect( newpage,&virtualPage::btnpressed,this,[=](int id,VirtualKey *ptr){
         Q_UNUSED(id);
-        if( ptr->type == VirtualKey::kTypeDIR || ptr->type == VirtualKey::kTypeEndpoint )
+        if( ptr->type == VirtualKey::kTypeDIR ||
+            ptr->type == VirtualKey::kTypeMultiOperation ||
+            ptr->type == VirtualKey::kTypeEndpoint )
         {
             QPixmap image = uImageMap.findImage(ptr->imageID);
             ui->bn_image->setIconSize(QSize(100,100));

@@ -20,6 +20,7 @@ public:
         kTypeBack,
         kTypeCMD,
         kTypeEndpoint,
+        kTypeMultiOperation,
         kTypeMAX
     };
 
@@ -31,6 +32,11 @@ public:
         kMsgRemovePage,
         kMsgConfig,
         kMsgSaveConfig,
+        kMsgAddMultiPage,
+        kMsgSetMultiPage,
+        kMsgRemoveMultiPage,
+        kMsgShowKeyPtr,
+        kMsgHideKeyPtr,
         kMsgMAX
     };
 
@@ -95,6 +101,8 @@ public:
 private:
     //QPluginLoader *PluginPtr;
 };
+
+Q_DECLARE_METATYPE(VirtualKey*)
 
 
 #endif // VIRTUALKEY_H

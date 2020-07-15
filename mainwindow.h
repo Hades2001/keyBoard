@@ -25,6 +25,7 @@
 #include "imagesmanage.h"
 #include "multioperation.h"
 
+
 #include "systools.h"
 #include "pluginmap.h"
 
@@ -41,6 +42,7 @@ public:
     ~MainWindow();
     void flushTreeWidget();
     int getEmptypageIndex();
+    void showVirtualPtr(VirtualKey *);
     virtualPage *creatNewPage(int column, int row, int *index);
     int mkNewpage(int column, int row);
     int mkDirpage(int num, int column, int row);
@@ -68,6 +70,7 @@ public slots:
 
 protected:
     void mousePressEvent(QMouseEvent *event);
+
 private slots:
     void on_Bn_Save_pressed();
     void on_bn_image_pressed();
